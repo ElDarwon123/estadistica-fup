@@ -18,34 +18,6 @@ export default function Module5Dispersion({ disp, mean, unit }: Module5Dispersio
   const [showTable, setShowTable] = useState(false);
   const u = unit ? ` ${unit}` : "";
 
-  // Coordenadas SVG para el diagrama de Boxplot
-  const svgWidth = 600;
-  const svgHeight = 120;
-  const paddingX = 50;
-  const plotWidth = svgWidth - paddingX * 2;
-
-  // Rango global incluyendo posibles atípicos y cercas
-  const allValues = [
-    disp.minVal,
-    disp.maxVal,
-    disp.lowerFenceLI,
-    disp.upperFenceLS,
-    ...disp.outliers,
-  ];
-  const globalMin = Math.min(...allValues);
-  const globalMax = Math.max(...allValues);
-  const globalSpan = globalMax - globalMin || 1;
-
-  const getSvgX = (val: number) => {
-    return paddingX + ((val - globalMin) / globalSpan) * plotWidth;
-  };
-
-  const xLI = getSvgX(disp.lowerFenceLI);
-  const xQ1 = getSvgX(disp.q1);
-  const xQ2 = getSvgX(disp.q2);
-  const xQ3 = getSvgX(disp.q3);
-  const xLS = getSvgX(disp.upperFenceLS);
-
   return (
     <div className="space-y-6">
       {/* Cuatro Tarjetas de Medidas de Dispersión (Stat Blocks) */}
@@ -237,72 +209,6 @@ export default function Module5Dispersion({ disp, mean, unit }: Module5Dispersio
           )}
         </div>
 
-        {/* Diagrama de Caja y Bigotes (Boxplot) en SVG Nativo Monocromático */}
-        <div className="pt-2">
-          <span className="text-xs font-semibold text-ink uppercase tracking-wider block mb-2 font-mono">
-            Diagrama de Caja y Bigotes (Boxplot Clínico)
-          </span>
-          <div className="w-full overflow-x-auto bg-surface-alt p-5 rounded-nested border border-hairline">
-            <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full max-w-[650px] mx-auto overflow-visible">
-              {/* Eje horizontal */}
-              <line x1={paddingX} y1={60} x2={svgWidth - paddingX} y2={60} stroke="#d4d4d4" strokeWidth="1" strokeDasharray="3 3" />
-
-              {/* Bigote izquierdo (desde LI hasta Q1) */}
-              <line x1={Math.max(paddingX, xLI)} y1={60} x2={xQ1} y2={60} stroke="#0a0a0a" strokeWidth="1.5" />
-              <line x1={Math.max(paddingX, xLI)} y1={45} x2={Math.max(paddingX, xLI)} y2={75} stroke="#0a0a0a" strokeWidth="1.5" />
-
-              {/* Caja intercuartílica (desde Q1 hasta Q3) */}
-              <rect
-                x={xQ1}
-                y={35}
-                width={Math.max(2, xQ3 - xQ1)}
-                height={50}
-                fill="#ffffff"
-                stroke="#0a0a0a"
-                strokeWidth="1.5"
-                rx="4"
-              />
-
-              {/* Línea de la Mediana (Q2) */}
-              <line x1={xQ2} y1={35} x2={xQ2} y2={85} stroke="#0a0a0a" strokeWidth="2.5" />
-
-              {/* Bigote derecho (desde Q3 hasta LS) */}
-              <line x1={xQ3} y1={60} x2={Math.min(svgWidth - paddingX, xLS)} y2={60} stroke="#0a0a0a" strokeWidth="1.5" />
-              <line x1={Math.min(svgWidth - paddingX, xLS)} y1={45} x2={Math.min(svgWidth - paddingX, xLS)} y2={75} stroke="#0a0a0a" strokeWidth="1.5" />
-
-              {/* Valores Atípicos como puntos rojos ember */}
-              {disp.outliers.map((outlier, i) => {
-                const ox = getSvgX(outlier);
-                return (
-                  <circle
-                    key={`outlier-dot-${i}`}
-                    cx={ox}
-                    cy={60}
-                    r={5}
-                    className="fill-ember stroke-paper stroke-2"
-                  />
-                );
-              })}
-
-              {/* Etiquetas numéricas */}
-              <text x={Math.max(paddingX, xLI)} y={98} textAnchor="middle" className="text-[10px] fill-mid-gray font-mono">
-                LI: {formatCourseNumber(disp.lowerFenceLI)}
-              </text>
-              <text x={xQ1} y={24} textAnchor="middle" className="text-[10px] fill-ink font-bold font-mono">
-                Q1: {formatCourseNumber(disp.q1)}
-              </text>
-              <text x={xQ2} y={108} textAnchor="middle" className="text-[10px] fill-ink font-bold font-mono">
-                Me: {formatCourseNumber(disp.q2)}
-              </text>
-              <text x={xQ3} y={24} textAnchor="middle" className="text-[10px] fill-ink font-bold font-mono">
-                Q3: {formatCourseNumber(disp.q3)}
-              </text>
-              <text x={Math.min(svgWidth - paddingX, xLS)} y={98} textAnchor="middle" className="text-[10px] fill-mid-gray font-mono">
-                LS: {formatCourseNumber(disp.upperFenceLS)}
-              </text>
-            </svg>
-          </div>
-        </div>
       </div>
     </div>
   );
