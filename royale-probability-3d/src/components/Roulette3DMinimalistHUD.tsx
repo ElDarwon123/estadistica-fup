@@ -522,7 +522,7 @@ export default function Roulette3DMinimalistHUD({
               value={bulkTextInput}
               onChange={(e) => setBulkTextInput(e.target.value)}
               rows={6}
-              placeholder="Valentina&#10;Alejandro&#10;Camila..."
+              placeholder="Valentina, Juan Andres, Camila..."
               className="w-full p-3 rounded-[20px] bg-[#14151a] text-white border border-zinc-700 font-mono text-xs outline-none focus:border-white"
             />
             <div className="flex gap-2 justify-end mt-3">

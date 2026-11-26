@@ -256,7 +256,7 @@ export default function Module2Frequencies({
         </div>
 
         {/* Gráfico Recharts */}
-        <div className="w-full h-72">
+        <div className={`w-full ${activeChart === "pie" ? "h-80 sm:h-96" : "h-72"}`}>
           <ResponsiveContainer width="100%" height="100%">
             {activeChart === "bar" ? (
               <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 25 }}>
@@ -286,9 +286,11 @@ export default function Module2Frequencies({
                   dataKey="porcentaje"
                   nameKey="name"
                   cx="50%"
-                  cy="50%"
-                  outerRadius={95}
-                  label={({ name, porcentaje, grados }) => `${name}: ${porcentaje}% (${grados}°)`}
+                  cy="44%"
+                  innerRadius={36}
+                  outerRadius={92}
+                  paddingAngle={1.5}
+                  label={({ porcentaje }) => (porcentaje >= 6 ? `${porcentaje}%` : "")}
                   labelLine={false}
                 >
                   {chartData.map((_, index) => (
@@ -296,13 +298,20 @@ export default function Module2Frequencies({
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(val: any, name: any, item: any) => [
-                    `${val}% (${item.payload.grados}°, f=${item.payload.frecuencia})`,
-                    "Porcentaje / Grados",
+                  formatter={(val: any, _name: any, item: any) => [
+                    `${val}% (${item.payload.grados}°, fi=${item.payload.frecuencia})`,
+                    item.payload.name,
                   ]}
                   contentStyle={{ backgroundColor: "#ffffff", borderColor: "#e5e5e5", color: "#0a0a0a", borderRadius: 18, fontSize: 12, boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}
                 />
-                <Legend />
+                <Legend
+                  verticalAlign="bottom"
+                  wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
+                  formatter={(value, entry: any) => {
+                    const p = entry?.payload;
+                    return p ? `${value} (${p.porcentaje}% • ${p.grados}°)` : value;
+                  }}
+                />
               </PieChart>
             )}
           </ResponsiveContainer>
