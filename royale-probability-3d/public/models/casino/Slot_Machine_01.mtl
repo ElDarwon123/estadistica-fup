@@ -1,0 +1,43 @@
+﻿# Blender 3.6.4 MTL File: 'Casino_Free.blend'
+# www.blender.org
+
+newmtl Color
+Ns 62.500000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures_4.png
+
+newmtl Emission
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures_4.png
+map_Ke Textures_4.png
+
+newmtl Screens_1
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Screens_1.png
+map_Ke Screens_1.png
+
+newmtl Slots
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.450000
+illum 2
+map_Kd Slots.png
+map_Ke Slots.png
+map_d Slots.png
+
