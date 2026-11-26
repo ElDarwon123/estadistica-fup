@@ -31,7 +31,7 @@ export default function Module4PositionMeasures({ data, unit }: Module4PositionM
 
   return (
     <div className="space-y-6">
-      {/* 1. Cuartiles Fijos (Q1, Q2, Q3) */}
+      {/* Cuartiles Fijos (Q1, Q2, Q3) */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Compass className="w-4 h-4 text-ink" />
@@ -70,7 +70,7 @@ export default function Module4PositionMeasures({ data, unit }: Module4PositionM
         </div>
       </div>
 
-      {/* 2. Deciles Clave (D1 a D9) */}
+      {/* Deciles Clave (D1 a D9) */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-4">
         <h4 className="text-sm font-semibold tracking-tight text-ink uppercase flex items-center gap-2">
           <BookmarkCheck className="w-4 h-4 text-ink" />
@@ -93,7 +93,7 @@ export default function Module4PositionMeasures({ data, unit }: Module4PositionM
         </div>
       </div>
 
-      {/* 3. Calculadora Interactiva de Percentiles (P1 a P99) */}
+      {/* Calculadora Interactiva de Percentiles (P1 a P99) */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-5">
         <div className="flex items-center justify-between pb-3 border-b border-hairline">
           <div className="flex items-center gap-2">

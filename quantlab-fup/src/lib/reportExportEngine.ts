@@ -67,7 +67,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.line(marginX, 12, pageWidth - marginX, 12);
   };
 
-  // ENCABEZADO INSTITUCIONAL PRINCIPAL (PÁGINA 1)
+  // Encabezado institucional principal (página 1)
   doc.setFillColor(10, 10, 10);
   doc.rect(marginX, curY, contentWidth, 22, "F");
 
@@ -87,7 +87,7 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += 27;
 
-  // TÍTULO DEL INFORME
+  // Título del informe
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(10, 10, 10);
@@ -138,7 +138,7 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += sec1H + 6;
 
-  // SECCIÓN 2: TABLA DE DISTRIBUCIÓN DE FRECUENCIAS
+  // Sección 2: tabla de distribución de frecuencias
   checkAddPage(20);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
@@ -185,7 +185,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.setTextColor(20, 20, 20);
     let rx = marginX;
 
-    // i
+    // I
     doc.text(row.index.toString(), rx + colWidths[0] / 2, curY + 3.8, { align: "center" });
     rx += colWidths[0];
 
@@ -194,11 +194,11 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.text(labelCol, rx + colWidths[1] / 2, curY + 3.8, { align: "center" });
     rx += colWidths[1];
 
-    // xi
+    // Xi
     doc.text(formatCourseNumber(row.classMark), rx + colWidths[2] / 2, curY + 3.8, { align: "center" });
     rx += colWidths[2];
 
-    // fi
+    // Fi
     doc.text(row.absoluteFrequency.toString(), rx + colWidths[3] / 2, curY + 3.8, { align: "center" });
     rx += colWidths[3];
 
@@ -206,7 +206,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.text(row.cumulativeFrequency.toString(), rx + colWidths[4] / 2, curY + 3.8, { align: "center" });
     rx += colWidths[4];
 
-    // hi
+    // Hi
     doc.text(formatCourseNumber(row.relativeFrequency), rx + colWidths[5] / 2, curY + 3.8, { align: "center" });
     rx += colWidths[5];
 
@@ -251,7 +251,7 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += 10;
 
-  // SECCIÓN 3: MEDIDAS DE TENDENCIA CENTRAL & ASIMETRÍA
+  // Sección 3: medidas de tendencia central & asimetría
   const cardW = (contentWidth - 6) / 3;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(6.8);
@@ -330,7 +330,7 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += skewH + 6;
 
-  // SECCIÓN 4: MEDIDAS DE POSICIÓN (CUARTILES, DECILES Y PERCENTILES)
+  // Sección 4: medidas de posición (cuartiles, deciles y percentiles)
   const q1 = computePositionMeasure(data.numericData, 1, 4, "Q");
   const q2 = computePositionMeasure(data.numericData, 2, 4, "Q");
   const q3 = computePositionMeasure(data.numericData, 3, 4, "Q");
@@ -406,7 +406,7 @@ export function exportReportToPDF(data: ReportExportData): void {
   );
   curY += 8;
 
-  // SECCIÓN 5: MEDIDAS DE DISPERSIÓN & ATÍPICOS (TUKEY)
+  // Sección 5: medidas de dispersión & atípicos (tukey)
   const dispCols = (contentWidth - 9) / 4;
   doc.setFont("helvetica", "italic");
   doc.setFontSize(6.5);
@@ -496,7 +496,7 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += tukeyH + 6;
 
-  // SECCIÓN 6: INTERPRETACIÓN OFICIAL DEL CURSO (4 PÁRRAFOS)
+  // Sección 6: interpretación oficial del curso (4 párrafos)
   checkAddPage(50);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
@@ -529,7 +529,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     curY += boxHeight + 3;
   });
 
-  // SECCIÓN 7: PROBABILIDAD EMPÍRICA Y CONTEO
+  // Sección 7: probabilidad empírica y conteo
   checkAddPage(22);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
@@ -569,7 +569,7 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += 18;
 
-  // PIE DE PÁGINA FINAL EN CADA HOJA
+  // Pie de página final en cada hoja
   const totalPages = doc.getNumberOfPages();
   for (let p = 1; p <= totalPages; p++) {
     doc.setPage(p);
@@ -584,7 +584,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     );
   }
 
-  // DESCARGA DEL ARCHIVO
+  // Descarga del archivo
   const safeVar = data.variableName.replace(/[^a-zA-Z0-9_-]/g, "_");
   const safeDs = data.dataset.name.replace(/[^a-zA-Z0-9_-]/g, "_");
   doc.save(`Reporte_Integral_${safeDs}_${safeVar}.pdf`);

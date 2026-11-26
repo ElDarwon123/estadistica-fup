@@ -22,7 +22,7 @@ interface Roulette3DProps {
   cameraView: "perspective" | "top" | "closeup";
 }
 
-// 1. COMPONENTE PARA CARGAR LA MESA REAL ABBIATI .GLB
+// Componente para cargar la mesa real abbiati .glb
 function RealCasinoTableGLB({
   isSpinning,
   targetNumber,
@@ -41,7 +41,7 @@ function RealCasinoTableGLB({
   const ballRef = useRef<THREE.Mesh>(null);
 
   // Coordenadas del centro de la ruleta en el modelo .GLB
-  // cx: -67.15, cy: 342.82, cz: -363.22 (escala 0.007)
+  // Cx: -67.15, cy: 342.82, cz: -363.22 (escala 0.007)
   const scale = 0.007;
   const wheelCenterX = -67.15 * scale;
   const wheelCenterY = 342.82 * scale;
@@ -138,7 +138,7 @@ function RealCasinoTableGLB({
   );
 }
 
-// 2. COMPONENTE PARA LA RUEDA PROCEDURAL DE ALTA RESOLUCIÓN CON NÚMEROS E ILUMINACIÓN
+// Componente para la rueda procedural de alta resolución con números e iluminación
 function ProceduralVIPWheel({
   isSpinning,
   targetNumber,
@@ -405,7 +405,7 @@ function ProceduralVIPWheel({
   );
 }
 
-// 3. CONTENEDOR PRINCIPAL CON SELECTOR DE MODO (.GLB REAL vs RUEDA PROCEDURAL)
+// Contenedor principal con selector de modo (.glb real vs rueda procedural)
 export default function Roulette3D(props: Roulette3DProps) {
   const [modelMode, setModelMode] = useState<"glb" | "procedural">("glb");
   const controlsRef = useRef<any>(null);

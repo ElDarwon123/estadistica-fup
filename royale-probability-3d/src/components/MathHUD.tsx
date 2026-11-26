@@ -95,7 +95,7 @@ export default function MathHUD({
         </button>
       </div>
 
-      {/* PESTAÑA 1: OPERACIONES Y REGLA DE LAPLACE */}
+      {/* Pestaña 1: operaciones y regla de laplace */}
       {activeTab === "laplace" && (
         <div className="space-y-3">
           {/* Clasificador de Sucesos Badge */}
@@ -236,7 +236,7 @@ export default function MathHUD({
         </div>
       )}
 
-      {/* PESTAÑA 2: PROBABILIDAD CONDICIONAL */}
+      {/* Pestaña 2: probabilidad condicional */}
       {activeTab === "conditional" && (
         <div className="space-y-3">
           {/* Tarjeta de Fórmula Principal */}
@@ -293,7 +293,7 @@ export default function MathHUD({
         </div>
       )}
 
-      {/* PESTAÑA 3: SIMULADOR MONTE CARLO Y CONVERGENCIA */}
+      {/* Pestaña 3: simulador monte carlo y convergencia */}
       {activeTab === "montecarlo" && (
         <div className="space-y-3">
           {/* Controles de Simulación */}

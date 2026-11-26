@@ -113,12 +113,12 @@ function Interactive3DScene({
       {/* Color de fondo del entorno 3D adaptativo */}
       <color attach="background" args={[lightBackground ? "#0f172a" : "#09090b"]} />
 
-      {/* 1. Fondo, Salón y Alfombra de Casino 3D */}
+      {/* Fondo, Salón y Alfombra de Casino 3D */}
       <Suspense fallback={null}>
         <CasinoEnvironment3D />
       </Suspense>
 
-      {/* 2. Micro-partículas doradas flotantes en suspensión */}
+      {/* Micro-partículas doradas flotantes en suspensión */}
       <Sparkles
         count={35}
         scale={[12, 5, 8]}
@@ -129,7 +129,7 @@ function Interactive3DScene({
         color={lightBackground ? "#a855f7" : "#facc15"}
       />
 
-      {/* 3. Iluminación cálida de casino de alta potencia y visibilidad */}
+      {/* Iluminación cálida de casino de alta potencia y visibilidad */}
       {/* Luz ambiental que llena el espacio */}
       <ambientLight intensity={lightBackground ? 2.8 : 1.7} color={lightBackground ? "#ffffff" : "#fff2db"} />
 
@@ -156,7 +156,7 @@ function Interactive3DScene({
         shadow-mapSize={1024}
       />
 
-      {/* Foco directo potente sobre el paño de apuestas para números cristalinos */}
+      {/* Foco directo potente sobre el paño de apuestas para números */}
       <spotLight
         position={[1.2, 8.2, 1.2]}
         angle={0.7}
@@ -202,7 +202,7 @@ function Interactive3DScene({
 }
 
 export default function RoyaleProbabilityPage() {
-  // 0. CONTROL DE PROGRAMA ACTIVO (ENTREGABLES DEL CURSO DE ESTADÍSTICA)
+  // Control de programa activo (entregables del curso de estadística)
   const [activeTab, setActiveTab] = useState<"roulette_person" | "roulette_3d">("roulette_person");
   // Toggle de Fondo Claro adaptativo para el HUD y el entorno 3D
   const [lightBackground, setLightBackground] = useState<boolean>(false);
@@ -220,9 +220,7 @@ export default function RoyaleProbabilityPage() {
     }
   }, []);
 
-  // =========================================================================
-  // PROGRAMA 1: ESTADO DE RULETA 3D DE SELECCIÓN DE PERSONAS
-  // =========================================================================
+  // Programa 1: estado de ruleta 3D de selección de personas
   const [participants, setParticipants] = useState<RouletteParticipant[]>([
     { id: "1", name: "Valentina", active: true },
     { id: "2", name: "Alejandro", active: true },
@@ -276,7 +274,7 @@ export default function RoyaleProbabilityPage() {
     setParticipants((prev) => prev.map((p) => ({ ...p, active: true })));
   }, []);
 
-  // 1. ESTADO DEL JUEGO DE CASINO (EL JUEGO COMPLETO)
+  // Estado del juego de casino
   const [balance, setBalance] = useState<number>(2500);
   const [selectedChip, setSelectedChip] = useState<ChipValue>(5);
   const [bets, setBets] = useState<Record<string, number>>({});
@@ -286,30 +284,30 @@ export default function RoyaleProbabilityPage() {
   const [lastWinningNumber, setLastWinningNumber] = useState<number | null>(null);
   const [wheelTheme, setWheelTheme] = useState<"mahogany" | "obsidian">("mahogany");
 
-  // 2. ESTADO DE EVENTOS MATEMÁTICOS (LAPLACE Y CONDICIONAL)
+  // Estado de eventos matemáticos (laplace y condicional)
   const [selectedA, setSelectedA] = useState<Set<number>>(() => getNumbersForPreset("red"));
   const [selectedB, setSelectedB] = useState<Set<number>>(() => getNumbersForPreset("even"));
   const [activeEvent, setActiveEvent] = useState<"A" | "B">("A");
   const [theoryMode, setTheoryMode] = useState<boolean>(false);
 
-  // 3. CONTROL DE GIRO Y CÁMARA 3D
+  // Control de giro y cámara 3D
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const [targetNumber, setTargetNumber] = useState<number | null>(0);
   const [cameraView, setCameraView] = useState<"perspective" | "top" | "closeup">("perspective");
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
-  // 4. HISTORIAL Y MONTE CARLO
+  // Historial y monte carlo
   const [history, setHistory] = useState<SpinRecord[]>([]);
   const [monteCarloPoints, setMonteCarloPoints] = useState<MonteCarloDataPoint[]>([]);
 
-  // 5. CÁLCULO DE PROBABILIDADES Y ESPERANZA MATEMÁTICA
+  // Cálculo de probabilidades y esperanza matemática
   const betStats = useMemo(() => calculateBetStats(bets), [bets]);
   const stats = useMemo(
     () => calculateProbabilityOperations(selectedA, selectedB),
     [selectedA, selectedB]
   );
 
-  // MANEJADORES DE APUESTAS DE CASINO
+  // Manejadores de apuestas de casino
   const handlePlaceBet = useCallback(
     (key: string) => {
       if (balance < selectedChip) return;
@@ -370,7 +368,7 @@ export default function RoyaleProbabilityPage() {
     setBets({ ...lastRoundBets });
   }, [balance, lastRoundBets]);
 
-  // MANEJADORES DE EVENTOS A Y B
+  // Manejadores de eventos A y B
   const handleApplyPreset = useCallback((preset: PresetKey, target: "A" | "B") => {
     const newSet = getNumbersForPreset(preset);
     if (target === "A") setSelectedA(newSet);
@@ -412,7 +410,7 @@ export default function RoyaleProbabilityPage() {
     else setSelectedB((prev) => invert(prev));
   }, []);
 
-  // GIRO DE RULETA 3D Y LIQUIDACIÓN
+  // Giro de ruleta 3D y liquidación
   const handleSpinSingle = useCallback(() => {
     if (isSpinning) return;
     const winningNum = Math.floor(Math.random() * 37);
@@ -426,7 +424,7 @@ export default function RoyaleProbabilityPage() {
       setIsSpinning(false);
       setLastWinningNumber(winningNum);
 
-      // 1. Liquidación de apuestas del casino
+      // Liquidación de apuestas del casino
       const roundResult = calculateRoundResult(bets, winningNum);
       if (roundResult.totalPayout > 0) {
         setBalance((prev) => prev + roundResult.totalPayout);
@@ -445,7 +443,7 @@ export default function RoyaleProbabilityPage() {
       setBets({});
       setBetHistoryStack([]);
 
-      // 2. Registro estadístico y pedagógico
+      // Registro estadístico y pedagógico
       const inA = selectedA.has(winningNum);
       const inB = selectedB.has(winningNum);
       const inIntersection = inA && inB;
@@ -466,7 +464,7 @@ export default function RoyaleProbabilityPage() {
 
       setHistory((prev) => [record, ...prev]);
 
-      // 3. Punto de Monte Carlo
+      // Punto de Monte Carlo
       setMonteCarloPoints((prev) => {
         const iteration = prev.length + 1;
         const prevSuccesses = prev.length > 0 ? prev[prev.length - 1].successesA : 0;
@@ -486,7 +484,7 @@ export default function RoyaleProbabilityPage() {
     [bets, selectedA, selectedB, stats.probA]
   );
 
-  // GIROS POR LOTES PARA MONTE CARLO
+  // Giros por lotes para monte carlo
   const handleSpinBatch = useCallback(
     (count: number) => {
       if (isSpinning) return;
@@ -546,9 +544,7 @@ export default function RoyaleProbabilityPage() {
     audioEngine.setMuted(next);
   }, [isMuted]);
 
-  // =========================================================================
-  // PROGRAMA 1: GIRO Y FÍSICA EN RULETA 3D DE PERSONAS
-  // =========================================================================
+  // Programa 1: giro y física en ruleta 3D de personas
   const handleSpin3DPerson = useCallback(() => {
     if (isSpinning || activeParticipants.length === 0) return;
     const winnerIdx = Math.floor(Math.random() * activeParticipants.length);
@@ -603,7 +599,7 @@ export default function RoyaleProbabilityPage() {
 
   return (
     <div className="relative w-screen h-[100dvh] flex flex-col overflow-hidden font-sans select-none bg-[#09090b] text-white">
-      {/* BARRA SUPERIOR DE NAVEGACIÓN (SLUSH DARK PILL NAV) */}
+      {/* Barra superior de navegación ( dark pill nav) */}
       <header className="z-50 flex-shrink-0 px-4 py-2.5 flex items-center justify-between bg-[#09090b] border-b border-zinc-800">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-white border border-black text-black flex items-center justify-center font-black text-sm">
@@ -614,7 +610,7 @@ export default function RoyaleProbabilityPage() {
           </span>
         </div>
 
-        {/* SELECTOR DE PESTAÑAS EN PÍLDORAS (1600px radius) */}
+        {/* Selector de pestañas en píldoras (1600px radius) */}
         <nav className="flex items-center gap-1.5">
           <button
             type="button"
@@ -644,12 +640,12 @@ export default function RoyaleProbabilityPage() {
         </nav>
       </header>
 
-      {/* CONTENIDO PRINCIPAL SEGÚN PESTAÑA ACTIVA */}
+      {/* Contenido principal según pestaña activa */}
       <main className="relative flex-1 overflow-hidden">
-        {/* PROGRAMA 1: RULETA 3D DE SELECCIÓN ALEATORIA DE PERSONAS */}
+        {/* Programa 1: ruleta 3D de selección aleatoria de personas */}
         {activeTab === "roulette_person" && (
           <div className="relative w-full h-full overflow-hidden">
-            {/* ESCENA 3D DEL CASINO CON LA MESA Y RULETA DE PERSONAS */}
+            {/* Escena 3D del casino con la mesa y ruleta de personas */}
             <div className="absolute inset-0 z-0">
               <Interactive3DScene
                 isSpinning={isSpinning}
@@ -672,7 +668,7 @@ export default function RoyaleProbabilityPage() {
               />
             </div>
 
-            {/* HUD LIQUID IRIDESCENCE DE LA RULETA 3D */}
+            {/* HUD de la ruleta 3D */}
             <Roulette3DMinimalistHUD
               participants={participants}
               activeParticipants={activeParticipants}
@@ -698,7 +694,7 @@ export default function RoyaleProbabilityPage() {
           </div>
         )}
 
-        {/* SIMULADOR 3D DE CASINO EUROPEO CON FICHAS */}
+        {/* Simulador 3D de casino europeo con fichas */}
         {activeTab === "roulette_3d" && (
           <div className="relative w-full h-full overflow-hidden">
             <div className="absolute inset-0 z-0">

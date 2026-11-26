@@ -49,7 +49,7 @@ export function generateCircularRouletteTexture(
   const centerX = 1024;
   const centerY = 1024;
 
-  // 1. Fondo base del disco
+  // Fondo base del disco
   ctx.fillStyle = theme === "obsidian" ? "#0f0f12" : "#2a0d07";
   ctx.beginPath();
   ctx.arc(centerX, centerY, 1024, 0, Math.PI * 2);
@@ -62,7 +62,7 @@ export function generateCircularRouletteTexture(
   const rInnerDish = 660;
   const rCenterHub = 260;
 
-  // 2. Anillo de pista de bola exterior oscura
+  // Anillo de pista de bola exterior oscura
   ctx.fillStyle = "#141418";
   ctx.beginPath();
   ctx.arc(centerX, centerY, rOuterTrack, 0, Math.PI * 2);
@@ -76,7 +76,7 @@ export function generateCircularRouletteTexture(
   ctx.arc(centerX, centerY, rOuterPocket, 0, Math.PI * 2);
   ctx.stroke();
 
-  // 3. GENERACIÓN DE SECTORES: PERSONAS O RULETA EUROPEA
+  // Generación de sectores: personas o ruleta europea
   const activeList = participants ? participants.filter((p) => p.active) : [];
   const isPersonMode = activeList.length > 0;
   const numPockets = isPersonMode ? activeList.length : 37;
@@ -180,14 +180,14 @@ export function generateCircularRouletteTexture(
     });
   }
 
-  // 4. Anillo dorado interior de retención de las casillas
+  // Anillo dorado interior de retención de las casillas
   ctx.strokeStyle = "#c5a059";
   ctx.lineWidth = 8;
   ctx.beginPath();
   ctx.arc(centerX, centerY, rInnerPocket, 0, Math.PI * 2);
   ctx.stroke();
 
-  // 5. Plato cónico interior de caoba pulida u obsidiana
+  // Plato cónico interior de caoba pulida u obsidiana
   ctx.fillStyle = theme === "obsidian" ? "#141419" : "#38120a";
   ctx.beginPath();
   ctx.arc(centerX, centerY, rInnerDish, 0, Math.PI * 2);
@@ -203,7 +203,7 @@ export function generateCircularRouletteTexture(
     ctx.stroke();
   }
 
-  // 6. LOS 8 RADIOS DORADOS RADIALES
+  // Los 8 radios dorados radiales
   for (let s = 0; s < 8; s++) {
     const spokeAngle = (s * Math.PI * 2) / 8 - Math.PI / 2;
     const x1 = centerX + Math.cos(spokeAngle) * (rCenterHub + 5);
@@ -226,7 +226,7 @@ export function generateCircularRouletteTexture(
     ctx.stroke();
   }
 
-  // 7. Núcleo central dorado con el emblema de Espacio Muestral Ω
+  // Núcleo central dorado con el emblema de Espacio Muestral Ω
   ctx.fillStyle = "#a16207";
   ctx.beginPath();
   ctx.arc(centerX, centerY, rCenterHub, 0, Math.PI * 2);

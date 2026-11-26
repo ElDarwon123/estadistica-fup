@@ -65,7 +65,7 @@ export default function Module2Frequencies({
 
   return (
     <div className="space-y-6">
-      {/* 1. Barra de Ajuste de Criterio de Agrupación (Sturges) */}
+      {/* Barra de Ajuste de Criterio de Agrupación (Sturges) */}
       <div className="p-5 rounded-cards bg-paper border border-hairline shadow-subtle flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Sliders className="w-4 h-4 text-ink" />
@@ -121,7 +121,7 @@ export default function Module2Frequencies({
         </div>
       </div>
 
-      {/* 2. Tabla Reglamentaria de Frecuencias */}
+      {/* Tabla Reglamentaria de Frecuencias */}
       <div className="rounded-cards border border-hairline bg-paper shadow-subtle overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-hairline flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -223,7 +223,7 @@ export default function Module2Frequencies({
         </div>
       </div>
 
-      {/* 3. Visualizaciones Gráficas Blueprint */}
+      {/* Visualizaciones Gráficas Blueprint */}
       <div className="rounded-cards border border-hairline bg-paper p-5 sm:p-6 shadow-subtle space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-hairline">
           <h4 className="text-sm font-semibold tracking-tight text-ink uppercase flex items-center gap-2">

@@ -233,9 +233,7 @@ export default function RealisticRouletteWheel({
 
   return (
     <group position={position} scale={scale}>
-      {/* ======================================================== */}
-      {/* 1. ESTATOR EXTERIOR: TAZÓN DE CAOBA CON REBORDE Y PISTA   */}
-      {/* ======================================================== */}
+      {/* Estator exterior: tazón de caoba con reborde y pista */}
       {/* Pared cilíndrica exterior de madera */}
       <mesh position={[0, -0.06, 0]} material={bowlWoodMaterial} receiveShadow>
         <cylinderGeometry args={[1.22, 1.22, 0.22, 64, 1, true]} />
@@ -299,9 +297,7 @@ export default function RealisticRouletteWheel({
         <torusGeometry args={[0.95, 0.008, 12, 64]} />
       </mesh>
 
-      {/* ======================================================== */}
-      {/* 2. ROTOR GIRATORIO: CARA ULTRA-NÍTIDA, TRASTES Y TORRETA */}
-      {/* ======================================================== */}
+      {/* Rotor giratorio: cara, trastes y torreta */}
       <group ref={rotorRef} position={[0, 0.006, 0]}>
         {/* DISCO CIRCULAR CON TODA LA CARA DE LA RULETA (Casillas, Números, Radios) */}
         <mesh
@@ -382,9 +378,7 @@ export default function RealisticRouletteWheel({
           );
         })}
 
-        {/* ======================================================== */}
-        {/* 3. TORRETA CENTRAL DORADA DE 4 BRAZOS CON ESFERAS        */}
-        {/* ======================================================== */}
+        {/* Torreta central dorada de 4 brazos con esferas */}
         <group position={[0, 0.005, 0]}>
           {/* Base escalonada de cáliz */}
           <mesh position={[0, 0.015, 0]} material={goldMaterial} castShadow>
@@ -439,9 +433,7 @@ export default function RealisticRouletteWheel({
         </group>
       </group>
 
-      {/* ======================================================== */}
-      {/* 4. BOLA METÁLICA CROMADA                                 */}
-      {/* ======================================================== */}
+      {/* Bola metálica cromada */}
       <mesh
         ref={ballRef}
         position={[0.98, 0.045, 0]}

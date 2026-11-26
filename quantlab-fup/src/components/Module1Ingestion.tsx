@@ -89,7 +89,7 @@ export default function Module1Ingestion({
 
   return (
     <div className="space-y-6">
-      {/* 1. Selector de Datasets Precargados */}
+      {/* Selector de Datasets Precargados */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Database className="w-4 h-4 text-ink" />
@@ -134,7 +134,7 @@ export default function Module1Ingestion({
         </div>
       </div>
 
-      {/* 2. Zona Drag & Drop para Cargar CSV o XLSX */}
+      {/* Zona Drag & Drop para Cargar CSV o XLSX */}
       <div
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
@@ -174,7 +174,7 @@ export default function Module1Ingestion({
         </button>
       </div>
 
-      {/* 3. Configuración de la Variable Seleccionada y Unidad de Medida */}
+      {/* Configuración de la Variable Seleccionada y Unidad de Medida */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-5">
         <div className="flex items-center gap-2 pb-3 border-b border-hairline">
           <CheckCircle2 className="w-4 h-4 text-ink" />

@@ -130,7 +130,7 @@ export default function Roulette3DMinimalistHUD({
 
   return (
     <div className="absolute inset-0 pointer-events-none select-none z-10 flex flex-col justify-between font-sans">
-      {/* 1. BARRA SUPERIOR: PILL CONTROLS (1600px radius, 0 shadows) */}
+      {/* BARRA SUPERIOR: PILL CONTROLS (1600px radius, 0 shadows) */}
       <div className="p-3 sm:p-4 flex items-center justify-between gap-3 pointer-events-auto">
         <button
           type="button"
@@ -196,7 +196,7 @@ export default function Roulette3DMinimalistHUD({
         </div>
       </div>
 
-      {/* 2. PANEL LATERAL IZQUIERDO: DARK SHELL + COLOR-BLOCKED SLUSH STICKERS */}
+      {/* Panel lateral izquierdo: dark shell + color-blocked stickers */}
       {isSidebarOpen && (
         <div className="pointer-events-auto absolute top-16 left-3 sm:left-4 bottom-24 w-80 sm:w-[348px] rounded-[28px] p-4 flex flex-col gap-3 bg-[#0c0d11] text-white border border-zinc-800 overflow-hidden">
           {/* Header compacto */}
@@ -239,7 +239,7 @@ export default function Roulette3DMinimalistHUD({
             </button>
           </div>
 
-          {/* STICKER TELEMETRY BLOCKS (Slush Color-Blocked Palette, 1px #000 border, crushed numbers) */}
+          {/* STICKER TELEMETRY BLOCKS ( Color-Blocked Palette, 1px #000 border, crushed numbers) */}
           <div className="grid grid-cols-2 gap-2">
             {/* Sticker 1: Electric Blue (#4da2ff) */}
             <div className="p-3.5 rounded-[20px] bg-[#4da2ff] text-black border border-black flex flex-col justify-between">
@@ -386,7 +386,7 @@ export default function Roulette3DMinimalistHUD({
         </div>
       )}
 
-      {/* 3. PANEL LATERAL DERECHO: HISTORIAL */}
+      {/* Panel lateral derecho: historial */}
       {showHistoryDrawer && (
         <div className="pointer-events-auto absolute top-16 right-3 sm:right-4 bottom-24 w-76 rounded-[28px] p-4 flex flex-col gap-3 bg-[#0c0d11] text-white border border-zinc-800">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
@@ -438,7 +438,7 @@ export default function Roulette3DMinimalistHUD({
         </div>
       )}
 
-      {/* 4. CTA PRINCIPAL INFERIOR: FILLED PILL BUTTON (Paper White #ffffff, #000000 ink, 0 shadow) */}
+      {/* CTA PRINCIPAL INFERIOR: FILLED PILL BUTTON (Paper White #ffffff, #000000 ink, 0 shadow) */}
       <div className="p-4 flex items-center justify-center pointer-events-auto">
         <button
           type="button"
@@ -460,7 +460,7 @@ export default function Roulette3DMinimalistHUD({
         </button>
       </div>
 
-      {/* 5. MODAL DE GANADOR */}
+      {/* Modal de ganador */}
       {winnerModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 pointer-events-auto">
           <div className="rounded-[30px] p-6 max-w-sm w-full text-center bg-[#0c0d11] text-white border border-zinc-700">
@@ -502,7 +502,7 @@ export default function Roulette3DMinimalistHUD({
         </div>
       )}
 
-      {/* MODAL PARA PEGAR LISTA */}
+      {/* Modal para pegar lista */}
       {showBulkModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 pointer-events-auto">
           <div className="rounded-[30px] p-6 max-w-md w-full bg-[#0c0d11] text-white border border-zinc-700">

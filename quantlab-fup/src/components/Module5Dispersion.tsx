@@ -48,7 +48,7 @@ export default function Module5Dispersion({ disp, mean, unit }: Module5Dispersio
 
   return (
     <div className="space-y-6">
-      {/* 1. Cuatro Tarjetas de Medidas de Dispersión (Stat Blocks) */}
+      {/* Cuatro Tarjetas de Medidas de Dispersión (Stat Blocks) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {/* Rango Total */}
         <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle flex flex-col justify-between">
@@ -106,7 +106,7 @@ export default function Module5Dispersion({ disp, mean, unit }: Module5Dispersio
         </div>
       </div>
 
-      {/* 2. Acordeón Desplegable: Tabla de Desviaciones de 3 Columnas */}
+      {/* Acordeón Desplegable: Tabla de Desviaciones de 3 Columnas */}
       <div className="rounded-cards border border-hairline bg-paper shadow-subtle overflow-hidden">
         <button
           onClick={() => setShowTable(!showTable)}
@@ -180,7 +180,7 @@ export default function Module5Dispersion({ disp, mean, unit }: Module5Dispersio
         )}
       </div>
 
-      {/* 3. Detector de Valores Atípicos (Regla 1.5 x RIC) & Diagrama de Caja (Boxplot) */}
+      {/* Detector de Valores Atípicos (Regla 1.5 x RIC) & Diagrama de Caja (Boxplot) */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-5">
         <div className="flex items-center justify-between pb-3 border-b border-hairline">
           <div className="flex items-center gap-2">

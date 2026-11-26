@@ -30,7 +30,7 @@ interface CasinoTable3DProps {
   winnerPersonIndex?: number | null;
 }
 
-// 1. CHIP 3D MULTI-DENOMINACIÓN DE CASINO REALISTA
+// Chip 3D multi-denominación de casino realista
 function RenderChipStack({
   amount,
   position,
@@ -108,7 +108,7 @@ function RenderChipStack({
   );
 }
 
-// 2. COMPONENTE PRINCIPAL DE LA MESA 3D
+// Componente principal de la mesa 3D
 export default function CasinoTable3D({
   isSpinning,
   targetNumber,
@@ -187,7 +187,7 @@ export default function CasinoTable3D({
     };
   };
 
-  // Coordenadas calculadas con precisión milimétrica para cada casilla del tapete
+  // Coordenadas calculadas con precisión para cada casilla del tapete
   const betSlots = useMemo(() => {
     const slots: Record<
       string,
@@ -201,7 +201,7 @@ export default function CasinoTable3D({
     const zeroW = 160;
     const zeroH = cellH * 3;
 
-    // 1. Cero (0)
+    // Cero (0)
     const zeroPos = canvasToWorld(gridX - zeroW / 2, gridY + zeroH / 2);
     slots["num-0"] = {
       x: zeroPos.x,
@@ -211,7 +211,7 @@ export default function CasinoTable3D({
       label: "0",
     };
 
-    // 2. Números 1 a 36 (3 filas x 12 columnas)
+    // Números 1 a 36 (3 filas x 12 columnas)
     const rows = [
       [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
       [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35],
@@ -233,7 +233,7 @@ export default function CasinoTable3D({
       });
     });
 
-    // 3. Columnas 2 to 1 (extremo derecho)
+    // Columnas 2 to 1 (extremo derecho)
     const colX = gridX + 12 * cellW + 65;
     const colKeys = ["col3", "col2", "col1"];
     for (let r = 0; r < 3; r++) {
@@ -248,7 +248,7 @@ export default function CasinoTable3D({
       };
     }
 
-    // 4. Docenas (1st 12, 2nd 12, 3rd 12)
+    // Docenas (1st 12, 2nd 12, 3rd 12)
     const dozenY = gridY + 3 * cellH + 18 + 50;
     const dozenW = (12 * cellW) / 3;
     const dozenKeys = ["dozen1", "dozen2", "dozen3"];
@@ -264,7 +264,7 @@ export default function CasinoTable3D({
       };
     });
 
-    // 5. Apuestas Simples (1-18, EVEN, RED, BLACK, ODD, 19-36)
+    // Apuestas Simples (1-18, EVEN, RED, BLACK, ODD, 19-36)
     const simpleY = gridY + 3 * cellH + 18 + 100 + 18 + 50;
     const simpleW = (12 * cellW) / 6;
     const simpleKeys = ["low", "even", "red", "black", "odd", "high"];
@@ -303,9 +303,7 @@ export default function CasinoTable3D({
 
   return (
     <group position={[0, -0.2, 0]}>
-      {/* ======================================================== */}
-      {/* 1. MUEBLE DE LA MESA (CAJÓN DE CAOBA MACIZA CONTINUO)    */}
-      {/* ======================================================== */}
+      {/* Mueble de la mesa (cajón de caoba maciza continuo) */}
       {/* Cuerpo principal rectangular de madera maciza */}
       <mesh
         position={[0, 0, 0]}
@@ -377,9 +375,7 @@ export default function CasinoTable3D({
         <cylinderGeometry args={[1.6, 1.6, 0.06, 36]} />
       </mesh>
 
-      {/* ======================================================== */}
-      {/* 2. REPOSABRAZOS / BARANDAS PERIMETRALES                   */}
-      {/* ======================================================== */}
+      {/* Reposabrazos / barandas perimetrales */}
       {/* Baranda Trasera (Superior) */}
       <mesh
         position={[0, 0.52, -1.5]}
@@ -426,9 +422,7 @@ export default function CasinoTable3D({
         <boxGeometry args={[0.1, 0.07, 2.76]} />
       </mesh>
 
-      {/* ======================================================== */}
-      {/* 3. PAÑO DE APUESTAS VERDE ESMERALDA HUNDIDO (FELT BETTING) */}
-      {/* ======================================================== */}
+      {/* Paño de apuestas verde esmeralda hundido (felt betting) */}
       <mesh
         position={[feltCenter.x, 0.462, feltCenter.z]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -456,9 +450,7 @@ export default function CasinoTable3D({
         )}
       </mesh>
 
-      {/* ======================================================== */}
-      {/* 4. LA RULETA REALISTA 3D ANIMADA (REF. IMAGEN 1)          */}
-      {/* ======================================================== */}
+      {/* La ruleta realista 3D animada */}
       <RealisticRouletteWheel
         position={[-2.55, 0.462, 0]}
         scale={0.95}
@@ -473,9 +465,7 @@ export default function CasinoTable3D({
         winnerPersonIndex={winnerPersonIndex}
       />
 
-      {/* ======================================================== */}
-      {/* 5. BANDEJA DE FICHAS DECORATIVA (RACK EN BORDE TRASERO)  */}
-      {/* ======================================================== */}
+      {/* Bandeja de fichas decorativa (rack en borde trasero) */}
       <group position={[-0.7, 0.50, -1.35]}>
         <mesh material={mahoganyMaterial}>
           <boxGeometry args={[1.8, 0.04, 0.26]} />
@@ -489,9 +479,7 @@ export default function CasinoTable3D({
         })}
       </group>
 
-      {/* ======================================================== */}
-      {/* 6. CAPA INTERACTIVA: DETECCIÓN DE APUESTAS Y FICHAS 3D    */}
-      {/* ======================================================== */}
+      {/* Capa interactiva: detección de apuestas y fichas 3D */}
       {!(participants && participants.some((p) => p.active)) &&
         Object.entries(betSlots).map(([key, slot]) => {
         const betAmount = bets[key] || 0;

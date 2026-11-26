@@ -44,9 +44,7 @@ export function toIrreducibleFraction(numerator: number, denominator: number): s
   return `${num}/${den}`;
 }
 
-// ============================================================================
-// TIPOS DE DATOS Y RESULTADOS ESTADÍSTICOS
-// ============================================================================
+// Tipos de datos y resultados estadísticos
 
 export interface FrequencyRow {
   label: string; // "x_i" o "[L_i, L_s)"
@@ -137,9 +135,7 @@ export interface CompleteStatAnalysis {
   };
 }
 
-// ============================================================================
-// MOTOR DE CÁLCULO ESTADÍSTICO
-// ============================================================================
+// Motor de cálculo estadístico
 
 export function calculatePositionMeasure(
   sorted: number[],
@@ -219,9 +215,7 @@ export function performStatAnalysis(
   let classAmplitude: number | undefined;
 
   if (!isGrouped) {
-    // ----------------------------------------------------
-    // DATOS NO AGRUPADOS (N < 40)
-    // ----------------------------------------------------
+    // Datos no agrupados (N < 40)
     // Conteo por cada valor único
     const countMap = new Map<number, number>();
     sorted.forEach((val) => {
@@ -251,11 +245,9 @@ export function performStatAnalysis(
       };
     });
   } else {
-    // ----------------------------------------------------
     // DATOS AGRUPADOS (N >= 40): Sturges y Amplitud
-    // k = round(1 + 3.322 * log10(N))
+    // K = round(1 + 3.322 * log10(N))
     // A = ceil(R / k)
-    // ----------------------------------------------------
     const kCalc = Math.round(1 + 3.322 * Math.log10(n));
     sturgesK = Math.max(3, kCalc);
     // Si el rango es 0, amplitud mínima de 1
@@ -306,9 +298,7 @@ export function performStatAnalysis(
   const totalPct = frequencyTable.reduce((acc, row) => acc + row.pct, 0);
   const totalDeg = frequencyTable.reduce((acc, row) => acc + row.deg, 0);
 
-  // ----------------------------------------------------
-  // B. MEDIDAS DE TENDENCIA CENTRAL
-  // ----------------------------------------------------
+  // B. medidas de tendencia central
   let mean = 0;
   if (!isGrouped) {
     mean = sorted.reduce((sum, x) => sum + x, 0) / n;
@@ -360,16 +350,12 @@ export function performStatAnalysis(
     else modeType = "Multimodal";
   }
 
-  // ----------------------------------------------------
-  // C. MEDIDAS DE POSICIÓN (Q1, Q2, Q3)
-  // ----------------------------------------------------
+  // C. medidas de posición (Q1, Q2, Q3)
   const q1 = calculatePositionMeasure(sorted, 1, 4, "Cuartil");
   const q2 = calculatePositionMeasure(sorted, 2, 4, "Cuartil");
   const q3 = calculatePositionMeasure(sorted, 3, 4, "Cuartil");
 
-  // ----------------------------------------------------
-  // D. MEDIDAS DE DISPERSIÓN Y ATÍPICOS
-  // ----------------------------------------------------
+  // D. medidas de dispersión y atípicos
   const iqr = q3.interpolatedValue - q1.interpolatedValue;
 
   // Varianza poblacional: suma(xi - x_bar)^2 / N
@@ -394,12 +380,10 @@ export function performStatAnalysis(
   );
   const hasOutliers = outliers.length > 0;
 
-  // ----------------------------------------------------
-  // INTERPRETACIÓN AUTOMÁTICA EN 4 PUNTOS
-  // ----------------------------------------------------
+  // Interpretación automática en 4 puntos
   const unitSuffix = unit.trim() ? ` ${unit.trim()}` : "";
 
-  // 1. Comportamiento típico
+  // Comportamiento típico
   const modeText =
     modeType === "Amodal"
       ? "la distribución es amodal (no existe un valor predominante)"
@@ -413,7 +397,7 @@ export function performStatAnalysis(
     Math.abs(mean - median) < stdDev * 0.25 ? "simétrica" : "asimétrica"
   } respecto al centro de los datos.`;
 
-  // 2. Dispersión y variabilidad
+  // Dispersión y variabilidad
   let cvQuality = "baja";
   let cvDesc = "datos homogéneos y altamente concentrados en torno a la media";
   if (cv >= 15 && cv <= 30) {
@@ -434,7 +418,7 @@ export function performStatAnalysis(
     cv
   )}%, lo que indica una variabilidad ${cvQuality} (${cvDesc}).`;
 
-  // 3. Distribución acumulada
+  // Distribución acumulada
   const p10 = calculatePositionMeasure(sorted, 10, 100, "Percentil");
   const p90 = calculatePositionMeasure(sorted, 90, 100, "Percentil");
 
@@ -442,7 +426,7 @@ export function performStatAnalysis(
     median
   )}${unitSuffix} (Mediana / Q2). Asimismo, el 75% no excede los ${q3.formattedValue}${unitSuffix} (Q3) y el 90% se encuentra por debajo de ${p90.formattedValue}${unitSuffix} (P90), concentrando el 50% central en el intervalo [${q1.formattedValue}, ${q3.formattedValue}]${unitSuffix}.`;
 
-  // 4. Diagnóstico de atípicos
+  // Diagnóstico de atípicos
   let outlierDiagnosis = "";
   if (!hasOutliers) {
     outlierDiagnosis = `Aplicando la regla de Tukey con una barrera de 1.5 × RIC, los límites de control se establecen en LI = ${formatStat(
@@ -504,9 +488,7 @@ export function performStatAnalysis(
   };
 }
 
-// ============================================================================
-// PARSER DE ARCHIVOS (CSV, TXT, EXCEL XLSX) Y TEXTO MANUAL
-// ============================================================================
+// Parser de archivos (CSV, txt, excel xlsx) y texto manual
 
 export function parseRawTextToNumbers(text: string): {
   numbers: number[];
@@ -566,7 +548,7 @@ export async function parseFileToNumbers(file: File): Promise<{
     }
     return { numbers: allNums.slice(0, 100), warning };
   } else {
-    // CSV o TXT
+    // CSV o txt
     const text = await file.text();
     return parseRawTextToNumbers(text);
   }

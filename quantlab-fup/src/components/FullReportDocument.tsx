@@ -59,7 +59,7 @@ export default function FullReportDocument({
 
   return (
     <div className="hidden print:block w-full max-w-5xl mx-auto p-8 text-black bg-white font-sans text-xs leading-relaxed">
-      {/* 1. ENCABEZADO INSTITUCIONAL FORMAL FUP */}
+      {/* Encabezado institucional formal FUP */}
       <div className="border-b-2 border-black pb-4 mb-6">
         <div className="flex items-center justify-between">
           <div>
@@ -83,7 +83,7 @@ export default function FullReportDocument({
         </div>
       </div>
 
-      {/* 2. TÍTULO Y METADATOS DEL ESTUDIO */}
+      {/* Título y metadatos del estudio */}
       <div className="bg-neutral-100 p-4 border border-neutral-300 rounded mb-6">
         <h2 className="text-sm font-bold uppercase tracking-tight text-neutral-900 mb-2">
           INFORME INTEGRAL DE ANALÍTICA ESTADÍSTICA: VARIABLE "{variableName.toUpperCase()}"
@@ -115,7 +115,7 @@ export default function FullReportDocument({
         </div>
       </div>
 
-      {/* 3. TABLA DE DISTRIBUCIÓN DE FRECUENCIAS */}
+      {/* Tabla de distribución de frecuencias */}
       <div className="mb-6 break-inside-avoid">
         <h3 className="text-xs font-bold uppercase border-b border-black pb-1 mb-2">
           1. Tabla de Distribución de Frecuencias y Verificación de Consistencia
@@ -187,7 +187,7 @@ export default function FullReportDocument({
         </p>
       </div>
 
-      {/* 4. MEDIDAS DE TENDENCIA CENTRAL Y FORMA */}
+      {/* Medidas de tendencia central y forma */}
       <div className="mb-6 break-inside-avoid">
         <h3 className="text-xs font-bold uppercase border-b border-black pb-1 mb-2">
           2. Medidas de Tendencia Central y Forma de la Distribución
@@ -231,7 +231,7 @@ export default function FullReportDocument({
         </div>
       </div>
 
-      {/* 5. MEDIDAS DE POSICIÓN (CUARTILES, DECILES, PERCENTILES) */}
+      {/* Medidas de posición (cuartiles, deciles, percentiles) */}
       <div className="mb-6 break-inside-avoid">
         <h3 className="text-xs font-bold uppercase border-b border-black pb-1 mb-2">
           3. Medidas de Posición Relativa (Cuartiles, Deciles y Percentiles)
@@ -270,7 +270,7 @@ export default function FullReportDocument({
         </p>
       </div>
 
-      {/* 6. MEDIDAS DE DISPERSIÓN & ATÍPICOS (TUKEY) */}
+      {/* Medidas de dispersión & atípicos (tukey) */}
       <div className="mb-6 break-inside-avoid">
         <h3 className="text-xs font-bold uppercase border-b border-black pb-1 mb-2">
           4. Medidas de Dispersión y Diagnóstico de Valores Atípicos (Regla de Tukey)
@@ -319,7 +319,7 @@ export default function FullReportDocument({
         </div>
       </div>
 
-      {/* 7. INTERPRETACIÓN OFICIAL ACADÉMICA (4 PÁRRAFOS) */}
+      {/* Interpretación oficial académica (4 párrafos) */}
       <div className="mb-6 break-inside-avoid">
         <h3 className="text-xs font-bold uppercase border-b border-black pb-1 mb-2">
           5. Síntesis de Interpretación Oficial (4 Párrafos Académicos Estructurados)
@@ -340,7 +340,7 @@ export default function FullReportDocument({
         </div>
       </div>
 
-      {/* 8. PROBABILIDAD Y COMBINATORIA */}
+      {/* Probabilidad y combinatoria */}
       <div className="mb-6 break-inside-avoid">
         <h3 className="text-xs font-bold uppercase border-b border-black pb-1 mb-2">
           6. Probabilidad Empírica y Modelos de Conteo
@@ -361,7 +361,7 @@ export default function FullReportDocument({
         </div>
       </div>
 
-      {/* 9. PIE INSTITUCIONAL */}
+      {/* Pie institucional */}
       <div className="border-t border-black pt-3 text-center text-[9px] text-neutral-500 font-mono">
         <p>QUANTLAB FUP • Motor de Estadística Descriptiva e Inferencia Cuantitativa • FUP 2026</p>
         <p>Informe generado automáticamente conforme a las directrices metodológicas del curso.</p>

@@ -147,7 +147,7 @@ export default function PersonRouletteVIP() {
       ctx.translate(center, center);
       ctx.rotate((rotationAngle * Math.PI) / 180);
 
-      // 1. Dibujar cada sector equitativo
+      // Dibujar cada sector equitativo
       for (let i = 0; i < N; i++) {
         const startAng = i * sectorAngleRad;
         const endAng = startAng + sectorAngleRad;
@@ -190,7 +190,7 @@ export default function PersonRouletteVIP() {
         ctx.restore();
       }
 
-      // 2. Anillo exterior dorado biselado de casino
+      // Anillo exterior dorado biselado de casino
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI);
       ctx.lineWidth = 14;
@@ -215,7 +215,7 @@ export default function PersonRouletteVIP() {
         ctx.fill();
       }
 
-      // 3. Eje central dorado con relieve metálico
+      // Eje central dorado con relieve metálico
       ctx.beginPath();
       ctx.arc(0, 0, 42, 0, 2 * Math.PI);
       const hubGrad = ctx.createRadialGradient(0, 0, 5, 0, 0, 42);
@@ -259,9 +259,9 @@ export default function PersonRouletteVIP() {
     const winnerPerson = activeParticipants[winnerIndex];
 
     // El puntero está fijo en la parte superior (270 grados en canvas estándar)
-    // Para que el sector `winnerIndex` quede en el puntero (top = 270 deg):
+    // Para que el sector `winnerIndex` quede en el puntero (top = 270 deg)
     // Ángulo medio del sector = winnerIndex * sectorAngleDeg + sectorAngleDeg / 2
-    // finalRotation % 360 = (270 - sectorMidAngle) % 360
+    // FinalRotation % 360 = (270 - sectorMidAngle) % 360
     const sectorMidAngle = winnerIndex * sectorAngleDeg + sectorAngleDeg / 2;
     const targetSectorOffset = (270 - sectorMidAngle + 360) % 360;
 
@@ -406,7 +406,7 @@ export default function PersonRouletteVIP() {
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6 space-y-6 text-slate-100">
-      {/* 1. ENCABEZADO VIP DE LA RULETA DE PERSONAS */}
+      {/* Encabezado VIP de la ruleta de personas */}
       <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-amber-950 border border-amber-500/30 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
         <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
           <Trophy className="w-64 h-64 text-amber-400" />
@@ -463,7 +463,7 @@ export default function PersonRouletteVIP() {
         </div>
       </div>
 
-      {/* 2. PANEL DE TELEMETRÍA PROBABILÍSTICA EN TIEMPO REAL */}
+      {/* Panel de telemetría probabilística en tiempo real */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Espacio Muestral */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-lg">
@@ -534,9 +534,9 @@ export default function PersonRouletteVIP() {
         </div>
       </div>
 
-      {/* 3. ZONA CENTRAL: RULETA INTERACTIVA Y PANEL DE PARTICIPANTES */}
+      {/* Zona central: ruleta interactiva y panel de participantes */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LADO IZQUIERDO/CENTRAL: LA RULETA Y EL BOTÓN DE GIRO */}
+        {/* Lado izquierdo/central: la ruleta y el botón de giro */}
         <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col items-center relative">
           {/* Puntero Superior Dorado Fijo con indicador de aguja */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
@@ -579,7 +579,7 @@ export default function PersonRouletteVIP() {
           </div>
         </div>
 
-        {/* LADO DERECHO: GESTIÓN DEL ESPACIO MUESTRAL Y PARTICIPANTES */}
+        {/* Lado derecho: gestión del espacio muestral y participantes */}
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
@@ -694,7 +694,7 @@ export default function PersonRouletteVIP() {
         </div>
       </div>
 
-      {/* 4. TABLA DE HISTORIAL Y PROBABILIDAD EMPÍRICA (FRECUENCIA RELATIVA) */}
+      {/* Tabla de historial y probabilidad empírica (frecuencia relativa) */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -784,7 +784,7 @@ export default function PersonRouletteVIP() {
         )}
       </div>
 
-      {/* 5. MODAL DE GANADOR CELEBRATORIO */}
+      {/* Modal de ganador celebratorio */}
       {winnerModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-amber-500 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center relative overflow-hidden">
@@ -822,7 +822,7 @@ export default function PersonRouletteVIP() {
         </div>
       )}
 
-      {/* MODAL PARA PEGAR LISTA EN LOTE */}
+      {/* Modal para pegar lista en lote */}
       {showBulkModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-lg w-full shadow-2xl">

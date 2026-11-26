@@ -7,9 +7,7 @@ import { useTexture } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { generateCasinoCarpetTexture } from "../lib/carpetTextureGenerator";
 
-// ============================================================================
-// 0. GESTOR DE MATERIALES Y TEXTURAS 3D NATIVAS DE CASINO
-// ============================================================================
+// Gestor de materiales y texturas 3D nativas de casino
 function useCasinoMaterials() {
   const textures = useTexture({
     tex4: "/models/casino/Textures_4.png",
@@ -34,7 +32,7 @@ function useCasinoMaterials() {
       t.needsUpdate = true;
     });
 
-    // 1. Material de textura principal (Cuerpo, ropa, caras, cabello, gabinetes)
+    // Material de textura principal (Cuerpo, ropa, caras, cabello, gabinetes)
     const matColor = new THREE.MeshStandardMaterial({
       map: textures.tex4,
       roughness: 0.42,
@@ -42,7 +40,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 2. Material de líneas y acentos (Faldas, vestidos, patrones)
+    // Material de líneas y acentos (Faldas, vestidos, patrones)
     const matLines = new THREE.MeshStandardMaterial({
       map: textures.texLines,
       roughness: 0.45,
@@ -50,7 +48,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 3. Marquesinas y partes luminosas de las tragamonedas
+    // Marquesinas y partes luminosas de las tragamonedas
     const matEmission = new THREE.MeshStandardMaterial({
       map: textures.tex4,
       emissive: new THREE.Color("#ffffff"),
@@ -61,7 +59,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 4. Pantallas de juego animadas / encendidas de las tragamonedas
+    // Pantallas de juego animadas / encendidas de las tragamonedas
     const matScreens = new THREE.MeshStandardMaterial({
       map: textures.texScreens1,
       emissive: new THREE.Color("#ffffff"),
@@ -72,7 +70,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 5. Rodillos y símbolos de las tragamonedas (Cerezas, 777, campanas)
+    // Rodillos y símbolos de las tragamonedas (Cerezas, 777, campanas)
     const matSlots = new THREE.MeshStandardMaterial({
       map: textures.texSlots,
       emissive: new THREE.Color("#ffffff"),
@@ -83,7 +81,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 6. Tapizado de tela borgoña de las sillas de casino
+    // Tapizado de tela borgoña de las sillas de casino
     const matFabric = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#880808"),
       normalMap: textures.texFabricNormal,
@@ -92,7 +90,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 7. Cadenas, biseles y adornos metálicos
+    // Cadenas, biseles y adornos metálicos
     const matChain = new THREE.MeshStandardMaterial({
       map: textures.texChain,
       emissive: new THREE.Color("#ffffff"),
@@ -103,7 +101,7 @@ function useCasinoMaterials() {
       side: THREE.DoubleSide,
     });
 
-    // 8. Vidrio de tragamonedas y acuarios
+    // Vidrio de tragamonedas y acuarios
     const matGlass = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#bae6fd"),
       roughness: 0.1,
@@ -192,9 +190,7 @@ function CasinoAsset({
   );
 }
 
-// ============================================================================
-// 1. EL CANDELABRO DE CRISTAL EN ESPIRAL HELICOIDAL (RÉPLICA FOTO MOUNT AIRY)
-// ============================================================================
+// El candelabro de cristal en espiral helicoidal
 export function HelicalCrystalChandelier({
   position = [0, 2.5, 0],
   scale = 1.0,
@@ -334,9 +330,7 @@ export function HelicalCrystalChandelier({
   );
 }
 
-// ============================================================================
-// 2. BARRA CIRCULAR CENTRAL CON DOSEL ILUMINADO (RÉPLICA FOTO MOUNT AIRY)
-// ============================================================================
+// Barra circular central con dosel iluminado
 function CentralBarLounge({ position = [0, -1.45, -9.5] }: { position?: [number, number, number] }) {
   const mahoganyMaterial = useMemo(
     () =>
@@ -505,9 +499,7 @@ function CentralBarLounge({ position = [0, -1.45, -9.5] }: { position?: [number,
   );
 }
 
-// ============================================================================
-// 3. GRAN TECHO ARQUITECTÓNICO CIRCULAR CON ARTESONADO Y LUZ INDIRECTA
-// ============================================================================
+// Gran techo arquitectónico circular con artesonado y luz indirecta
 function GrandCasinoCeiling() {
   const woodMaterial = useMemo(
     () =>
@@ -566,9 +558,7 @@ function GrandCasinoCeiling() {
   );
 }
 
-// ============================================================================
-// 4. ESCENA COMPLETA 3D DE CASINO CON TEXTURAS DE ALTA DEFINICIÓN Y PERSONAJES
-// ============================================================================
+// Escena completa 3D de casino con texturas de alta definición y personajes
 function CasinoSceneContent() {
   const { getMaterial } = useCasinoMaterials();
 
@@ -579,7 +569,7 @@ function CasinoSceneContent() {
 
   return (
     <group>
-      {/* 1. SUELO ALFOMBRADO ROJO BORGOÑA Y ORO REALISTA 3D */}
+      {/* Suelo alfombrado rojo borgoña y oro realista 3D */}
       <mesh position={[0, -1.45, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[65, 65]} />
         {carpetTexture ? (
@@ -593,18 +583,16 @@ function CasinoSceneContent() {
         )}
       </mesh>
 
-      {/* 2. GRAN TECHO ARQUITECTÓNICO CIRCULAR */}
+      {/* Gran techo arquitectónico circular */}
       <GrandCasinoCeiling />
 
-      {/* 3. RÉPLICAS DEL CANDELABRO DE CRISTAL HELICOIDAL (ELEVADOS PARA NO OBSTRUIR EL TAPETE) */}
+      {/* Réplicas del candelabro de cristal helicoidal (elevados para no obstruir el tapete) */}
       <HelicalCrystalChandelier position={[-4.6, 4.5, -0.8]} scale={0.82} lightIntensity={3.8} />
       <HelicalCrystalChandelier position={[4.6, 4.5, -0.8]} scale={0.82} lightIntensity={3.8} />
       <HelicalCrystalChandelier position={[-3.2, 4.3, -3.8]} scale={0.68} lightIntensity={2.8} />
       <HelicalCrystalChandelier position={[3.2, 4.3, -3.8]} scale={0.68} lightIntensity={2.8} />
 
-      {/* ================================================================== */}
-      {/* 4. LA SHOWGIRL CROUPIER TEXTURIZADA EN LA MESA DE RULETA           */}
-      {/* ================================================================== */}
+      {/* La showgirl croupier texturizada en la mesa de ruleta */}
       <group position={[-1.35, -0.42, -1.65]}>
         {/* Plataforma de caoba elegante detrás de la mesa */}
         <mesh position={[0, -0.52, 0]} receiveShadow>
@@ -636,9 +624,7 @@ function CasinoSceneContent() {
         />
       </group>
 
-      {/* ================================================================== */}
-      {/* 5. MÁQUINAS TRAGAMONEDAS 3D Y SILLAS TEXTURIZADAS EN LOS PASILLOS   */}
-      {/* ================================================================== */}
+      {/* Máquinas tragamonedas 3D y sillas texturizadas en los pasillos */}
       {/* Banco Flanco Izquierdo */}
       {[
         { z: 1.0, model: "Slot_Machine_01" },
@@ -705,9 +691,7 @@ function CasinoSceneContent() {
         </group>
       ))}
 
-      {/* ================================================================== */}
-      {/* 6. NPCS PERSONAJES VIVOS EN EL CASINO TOTALMENTE TEXTURIZADOS       */}
-      {/* ================================================================== */}
+      {/* Npcs personajes vivos en el casino totalmente texturizados */}
       {/* NPC 1: Guardia de Seguridad (18_Security) */}
       <group position={[-3.8, -1.45, -2.6]}>
         <CasinoAsset
@@ -756,9 +740,7 @@ function CasinoSceneContent() {
         />
       </group>
 
-      {/* ================================================================== */}
-      {/* 7. BARRA CIRCULAR CENTRAL CON DOSEL ILUMINADO AL FONDO             */}
-      {/* ================================================================== */}
+      {/* Barra circular central con dosel iluminado al fondo */}
       <CentralBarLounge position={[0, -1.45, -9.5]} />
 
       {/* Letrero Neón de Casino sobre el fondo */}
@@ -772,7 +754,7 @@ function CasinoSceneContent() {
         />
       </group>
 
-      {/* 8. COLUMNAS ARQUITECTÓNICAS DECORATIVAS CON APLIQUES DE LUZ */}
+      {/* Columnas arquitectónicas decorativas con apliques de luz */}
       {[-7.5, 7.5].map((colX, i) => (
         <group key={`column-${i}`} position={[colX, 1.8, -3.5]}>
           <mesh receiveShadow castShadow>

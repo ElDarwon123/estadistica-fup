@@ -216,11 +216,9 @@ export default function QuantLabDashboard() {
 
   return (
     <>
-      {/* ============================================================== */}
-      {/* 1. APLICACIÓN INTERACTIVA EN PANTALLA (OCULTA AL IMPRIMIR)    */}
-      {/* ============================================================== */}
+      {/* Aplicación interactiva en pantalla (oculta al imprimir) */}
       <div className="min-h-[100dvh] flex flex-col bg-canvas text-ink font-geist selection:bg-ink selection:text-paper print:hidden">
-        {/* HEADER INSTITUCIONAL */}
+        {/* Header institucional */}
         <header className="bg-paper/95 backdrop-blur-md border-b border-hairline sticky top-0 z-30 shadow-subtle">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3.5">
@@ -266,7 +264,7 @@ export default function QuantLabDashboard() {
           </div>
         </header>
 
-        {/* BARRA DE NAVEGACIÓN MONOCROMÁTICA */}
+        {/* Barra de navegación monocromática */}
         <nav className="bg-paper border-b border-hairline sticky top-16 z-20 overflow-x-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 flex gap-1.5 min-w-max py-2">
             {navItems.map((item) => {
@@ -290,7 +288,7 @@ export default function QuantLabDashboard() {
           </div>
         </nav>
 
-        {/* CONTENEDOR PRINCIPAL */}
+        {/* Contenedor principal */}
         <main className="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 space-y-6">
           {/* Banner de Contexto de Estudio Clínico */}
           <div className="p-4 sm:p-5 rounded-cards bg-paper border border-hairline shadow-subtle flex flex-wrap items-center justify-between gap-3">
@@ -318,7 +316,7 @@ export default function QuantLabDashboard() {
             </div>
           </div>
 
-          {/* CONTENIDO DEL MÓDULO ACTIVO */}
+          {/* Contenido del módulo activo */}
           {activeTab === 1 && (
             <Module1Ingestion
               currentDataset={currentDataset}
@@ -376,7 +374,7 @@ export default function QuantLabDashboard() {
           )}
         </main>
 
-        {/* FOOTER CIENTÍFICO */}
+        {/* Footer científico */}
         <footer className="mt-auto border-t border-hairline bg-paper py-5 px-6 text-center text-xs text-mid-gray">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-[11px]">
             <p>
@@ -389,9 +387,7 @@ export default function QuantLabDashboard() {
         </footer>
       </div>
 
-      {/* ============================================================== */}
-      {/* 2. DOCUMENTO DE REPORTE COMPLETO (SOLO VISIBLE EN IMPRESIÓN/PDF)*/}
-      {/* ============================================================== */}
+      {/* Documento de reporte completo (solo visible en impresión/pdf) */}
       <FullReportDocument
         dataset={currentDataset}
         variableName={selectedColumn}
@@ -406,9 +402,7 @@ export default function QuantLabDashboard() {
         interpretation={courseInterpretation}
       />
 
-      {/* ============================================================== */}
-      {/* 3. MODAL INTERACTIVO DE DESCARGA Y EXPORTACIÓN INTEGRAL       */}
-      {/* ============================================================== */}
+      {/* Modal interactivo de descarga y exportación integral */}
       <ReportExportModal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}

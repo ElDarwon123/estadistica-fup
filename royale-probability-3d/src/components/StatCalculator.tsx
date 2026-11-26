@@ -135,7 +135,7 @@ export default function StatCalculator() {
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6 space-y-6 text-zinc-100">
-      {/* 1. ENCABEZADO DE LA CALCULADORA ESTADÍSTICA (MINIMALISTA) */}
+      {/* Encabezado de la calculadora estadística (minimalista) */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5 relative">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -172,7 +172,7 @@ export default function StatCalculator() {
         </div>
       </div>
 
-      {/* ALERTA DE LÍMITE DE 100 DATOS */}
+      {/* Alerta de límite de 100 datos */}
       {warningMessage && (
         <div className="bg-amber-950/80 border border-amber-500/50 rounded-xl p-4 flex items-center gap-3 text-amber-200 text-xs shadow-lg animate-fade-in">
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
@@ -180,7 +180,7 @@ export default function StatCalculator() {
         </div>
       )}
 
-      {/* 2. PANEL DE INGESTA DE DATOS (MANUAL, ARCHIVO, ALEATORIO) */}
+      {/* Panel de ingesta de datos (manual, archivo, aleatorio) */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2">
@@ -314,7 +314,7 @@ export default function StatCalculator() {
         </div>
       ) : (
         <>
-          {/* 3. RESUMEN DE PARÁMETROS GLOBALES */}
+          {/* Resumen de parámetros globales */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
@@ -383,7 +383,7 @@ export default function StatCalculator() {
             )}
           </div>
 
-          {/* 4. TABLA DE DISTRIBUCIÓN DE FRECUENCIAS */}
+          {/* Tabla de distribución de frecuencias */}
           <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-3">
             <div className="flex items-center justify-between">
               <div>
@@ -449,7 +449,7 @@ export default function StatCalculator() {
                     </tr>
                   ))}
                 </tbody>
-                {/* FILA DE TOTAL / VERIFICACIÓN OBLIGATORIA */}
+                {/* Fila de total / verificación obligatoria */}
                 <tfoot className="bg-slate-950 font-mono font-bold text-xs border-t-2 border-emerald-500/40 text-emerald-300">
                   <tr>
                     <td className="py-2.5 px-3 uppercase tracking-wider">
@@ -476,9 +476,9 @@ export default function StatCalculator() {
             </div>
           </div>
 
-          {/* 5. MEDIDAS DE TENDENCIA CENTRAL Y POSICIÓN */}
+          {/* Medidas de tendencia central y posición */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* MEDIDAS DE TENDENCIA CENTRAL */}
+            {/* Medidas de tendencia central */}
             <div className="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
               <h3 className="text-base font-bold text-amber-300 flex items-center gap-2">
                 <BookOpen className="w-4 h-4" /> Medidas de Tendencia Central
@@ -545,7 +545,7 @@ export default function StatCalculator() {
               </div>
             </div>
 
-            {/* MEDIDAS DE POSICIÓN INTERACTIVAS (CUARTILES, DECILES, PERCENTILES) */}
+            {/* Medidas de posición interactivas (cuartiles, deciles, percentiles) */}
             <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-bold text-purple-300 flex items-center gap-2">
@@ -685,7 +685,7 @@ export default function StatCalculator() {
             </div>
           </div>
 
-          {/* 6. MEDIDAS DE DISPERSIÓN, TABLA DE VARIANZA Y DETECCIÓN DE ATÍPICOS */}
+          {/* Medidas de dispersión, tabla de varianza y detección de atípicos */}
           <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-5">
             <h3 className="text-base font-bold text-yellow-300 flex items-center gap-2">
               <Layers className="w-4 h-4" /> Medidas de Dispersión y Detección de Valores Atípicos
@@ -758,7 +758,7 @@ export default function StatCalculator() {
               </div>
             </div>
 
-            {/* BOTÓN / ACORDEÓN PARA DESPLEGAR LA TABLA DE 3 COLUMNAS DE VARIANZA */}
+            {/* Botón / acordeón para desplegar la tabla de 3 columnas de varianza */}
             <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-950">
               <button
                 type="button"
@@ -835,7 +835,7 @@ export default function StatCalculator() {
               )}
             </div>
 
-            {/* DETECTOR DE VALORES ATÍPICOS (CRITERIO DE TUKEY 1.5 * RIC) */}
+            {/* Detector de valores atípicos (criterio de tukey 1.5 * RIC) */}
             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -884,7 +884,7 @@ export default function StatCalculator() {
             </div>
           </div>
 
-          {/* 7. VISUALIZACIÓN GRÁFICA PERTINENTE (BARRAS, POLÍGONO, TORTA) */}
+          {/* Visualización gráfica pertinente (barras, polígono, torta) */}
           <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
               <div>
@@ -934,7 +934,7 @@ export default function StatCalculator() {
               </div>
             </div>
 
-            {/* LIENZO DEL GRÁFICO (RENDERIZADO SVG INTERACTIVO Y NATIVO) */}
+            {/* Lienzo del gráfico (renderizado svg interactivo y nativo) */}
             <div className="w-full bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-center min-h-[300px]">
               {activeChartTab === "bar" && (
                 <div className="w-full max-w-3xl overflow-x-auto">
@@ -1181,7 +1181,7 @@ export default function StatCalculator() {
             </div>
           </div>
 
-          {/* 8. PANEL DE INTERPRETACIÓN AUTOMÁTICA EN 4 PUNTOS OBLIGATORIOS (MINIMALISTA) */}
+          {/* Panel de interpretación automática en 4 puntos obligatorios (minimalista) */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5 space-y-4">
             <div className="flex items-center gap-2 border-b border-zinc-800 pb-3">
               <CheckCircle2 className="w-5 h-5 text-amber-400" />

@@ -24,7 +24,7 @@ export function generateCasinoFeltTexture(
     return null;
   }
 
-  // 1. Fondo terciopelo verde esmeralda mate de casino de alta gama
+  // Fondo terciopelo verde esmeralda mate de casino de alta gama
   ctx.fillStyle = "#0a4528";
   ctx.fillRect(0, 0, 2048, 1024);
 
@@ -37,7 +37,7 @@ export function generateCasinoFeltTexture(
     ctx.fillRect(x, 0, 2, 1024);
   }
 
-  // 2. Ribetes dorados perimetrales con doble filete
+  // Ribetes dorados perimetrales con doble filete
   ctx.strokeStyle = "#c5a059";
   ctx.lineWidth = 6;
   ctx.strokeRect(36, 36, 1976, 952);
@@ -49,9 +49,7 @@ export function generateCasinoFeltTexture(
   const isPersonMode = activeList.length > 0;
 
   if (isPersonMode) {
-    // =========================================================================
-    // MODO RULETA DE PERSONAS (SELECCIÓN ALEATORIA DE PARTICIPANTES)
-    // =========================================================================
+    // Modo ruleta de personas (selección aleatoria de participantes)
     const N = activeList.length;
     const probPct = (100 / N).toFixed(1);
 
@@ -137,15 +135,13 @@ export function generateCasinoFeltTexture(
       ctx.fillText(displayName, x + cardW / 2, y + cardH / 2 + (compact ? 2 : 10));
     });
   } else {
-    // =========================================================================
-    // MODO RULETA EUROPEA COMPLETA (37 CASILLAS, 2:1, DOCENAS, SUERTES SENCILLAS)
-    // =========================================================================
+    // Modo ruleta europea completa (37 casillas, 2:1, docenas, suertes sencillas)
     const gridX = 320;
     const gridY = 130;
     const cellW = 115;
     const cellH = 170;
 
-    // 1. CASILLA DEL CERO (0) - A la izquierda de la cuadrícula
+    // CASILLA DEL CERO (0) - A la izquierda de la cuadrícula
     const zeroW = 160;
     const zeroH = cellH * 3;
     ctx.fillStyle = "#047857";
@@ -160,7 +156,7 @@ export function generateCasinoFeltTexture(
     ctx.textBaseline = "middle";
     ctx.fillText("0", gridX - zeroW / 2, gridY + zeroH / 2);
 
-    // 2. CUADRÍCULA 3x12 DE LOS NÚMEROS 1 AL 36
+    // Cuadrícula 3x12 de los números 1 al 36
     const rows = [
       [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36],
       [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35],
@@ -191,7 +187,7 @@ export function generateCasinoFeltTexture(
       });
     });
 
-    // 3. COLUMNAS 2 TO 1 (Extremo Derecho)
+    // COLUMNAS 2 TO 1 (Extremo Derecho)
     const colX = gridX + 12 * cellW;
     const colW = 130;
     for (let r = 0; r < 3; r++) {
@@ -209,7 +205,7 @@ export function generateCasinoFeltTexture(
       ctx.fillText("2 to 1", colX + colW / 2, cy + cellH / 2);
     }
 
-    // 4. DOCENAS (1st 12, 2nd 12, 3rd 12)
+    // DOCENAS (1st 12, 2nd 12, 3rd 12)
     const dozenY = gridY + 3 * cellH + 18;
     const dozenW = (12 * cellW) / 3; // 460
     const dozenH = 100;
@@ -230,7 +226,7 @@ export function generateCasinoFeltTexture(
       ctx.fillText(dozenLabels[d], dx + dozenW / 2, dozenY + dozenH / 2);
     }
 
-    // 5. APUESTAS SIMPLES (1-18, EVEN, RED, BLACK, ODD, 19-36)
+    // Apuestas simples (1-18, even, red, black, odd, 19-36)
     const simpleY = dozenY + dozenH + 18;
     const simpleW = (12 * cellW) / 6; // 230
     const simpleH = 100;

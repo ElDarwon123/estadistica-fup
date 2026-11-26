@@ -121,7 +121,7 @@ export default function SoberHUD({
 
   return (
     <div className="pointer-events-none fixed inset-0 z-20 flex flex-col justify-between p-3 sm:p-5 select-none font-sans">
-      {/* 1. BARRA SUPERIOR: PILL CONTROLS + SALDO STICKERS */}
+      {/* Barra superior: pill controls + saldo stickers */}
       <div className="pointer-events-auto flex flex-wrap items-center justify-between gap-2">
         {/* Saldo & Apuesta */}
         <div className="flex items-center gap-1.5">
@@ -188,7 +188,7 @@ export default function SoberHUD({
         </div>
       </div>
 
-      {/* 2. DRAWERS LATERALES: DARK SHELL + COLOR-BLOCKED STICKERS */}
+      {/* Drawers laterales: dark shell + color-blocked stickers */}
       {!zenMode && (
         <div className="pointer-events-none flex-1 flex justify-between items-start pt-3 gap-4 overflow-hidden">
           {/* Izquierda: Eventos A y B */}
@@ -329,7 +329,7 @@ export default function SoberHUD({
         </div>
       )}
 
-      {/* 3. CONSOLA INFERIOR DE APUESTAS */}
+      {/* Consola inferior de apuestas */}
       <footer className="pointer-events-auto flex flex-col items-center gap-2 w-full max-w-2xl mx-auto">
         {lastSpin && (
           <div className="px-4 py-1 rounded-full bg-[#0c0d11] border border-zinc-700 text-xs font-mono text-white flex items-center gap-2">

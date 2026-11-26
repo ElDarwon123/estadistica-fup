@@ -189,7 +189,7 @@ export function computeFrequencyTable(
     };
   } else {
     // DATOS AGRUPADOS (Regla de Sturges y Amplitud A)
-    // k = round(1 + 3.322 * log10(N))
+    // K = round(1 + 3.322 * log10(N))
     const sturgesK = customK || Math.max(3, Math.round(1 + 3.322 * Math.log10(N)));
     // A = ceil(R / k) o con decimales si R tiene decimales
     const calculatedA = rangeR === 0 ? 1 : Math.ceil(rangeR / sturgesK);
@@ -295,7 +295,7 @@ export function computeCentralTendency(
     };
   }
 
-  // 1. Media Aritmética
+  // Media Aritmética
   let mean = 0;
   let meanSteps = "";
   if (!freqTable.isGrouped) {
@@ -303,13 +303,13 @@ export function computeCentralTendency(
     mean = sum / N;
     meanSteps = `x̄ = (Σ xi) / N = ${formatCourseNumber(sum)} / ${N} = ${formatCourseNumber(mean)}`;
   } else {
-    // x̄ = Σ (xi * fi) / N
+    // X̄ = Σ (xi * fi) / N
     const sumXiFi = freqTable.rows.reduce((acc, row) => acc + row.classMark * row.absoluteFrequency, 0);
     mean = sumXiFi / N;
     meanSteps = `x̄ = Σ (xi · fi) / N = ${formatCourseNumber(sumXiFi)} / ${N} = ${formatCourseNumber(mean)}`;
   }
 
-  // 2. Mediana
+  // Mediana
   let median = 0;
   let medianSteps = "";
   if (!freqTable.isGrouped) {
@@ -340,7 +340,7 @@ export function computeCentralTendency(
     medianSteps = `Clase mediana en Fi ≥ N/2 (${halfN}): Intervalo ${medianRow.intervalLabel}. Me = Li + [(N/2 - F(i-1)) / fi] · A = ${formatCourseNumber(Li)} + [(${halfN} - ${FiPrev}) / ${fi}] · ${A} = ${formatCourseNumber(median)}`;
   }
 
-  // 3. Moda
+  // Moda
   const maxFi = Math.max(...freqTable.rows.map((r) => r.absoluteFrequency));
   const modalRows = freqTable.rows.filter((r) => r.absoluteFrequency === maxFi);
 
@@ -366,7 +366,7 @@ export function computeCentralTendency(
     modeExplanation = `Multimodal: Existen ${modalRows.length} modas con frecuencia fi = ${maxFi}.`;
   }
 
-  // 4. Indicador visual de Sesgo (Asimetría)
+  // Indicador visual de Sesgo (Asimetría)
   const diff = mean - median;
   let skewness: "Simétrica" | "Sesgada a la Derecha (Positiva)" | "Sesgada a la Izquierda (Negativa)" = "Simétrica";
   let skewnessExplanation = "";

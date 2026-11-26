@@ -158,7 +158,7 @@ export default function Module7ProbabilityCounting({
 
   return (
     <div className="space-y-6">
-      {/* SECCIÓN 1: PROBABILIDAD EMPÍRICA SOBRE LA DB */}
+      {/* Sección 1: probabilidad empírica sobre la db */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-5">
         <div className="flex items-center gap-2 pb-3 border-b border-hairline">
           <Sparkles className="w-4 h-4 text-ink" />
@@ -345,7 +345,7 @@ export default function Module7ProbabilityCounting({
         </div>
       </div>
 
-      {/* SECCIÓN 2: TÉCNICAS DE CONTEO CON ARITMÉTICA BIGINT */}
+      {/* Sección 2: técnicas de conteo con aritmética bigint */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-5">
         <div className="flex items-center justify-between pb-3 border-b border-hairline">
           <div className="flex items-center gap-2">

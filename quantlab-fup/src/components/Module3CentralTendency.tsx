@@ -12,7 +12,7 @@ export default function Module3CentralTendency({ ct, unit }: Module3CentralTende
 
   return (
     <div className="space-y-6">
-      {/* 1. Tres Tarjetas Principales de Tendencia Central (Stat Blocks) */}
+      {/* Tres Tarjetas Principales de Tendencia Central (Stat Blocks) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Media Aritmética */}
         <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle flex flex-col justify-between">
@@ -83,7 +83,7 @@ export default function Module3CentralTendency({ ct, unit }: Module3CentralTende
         </div>
       </div>
 
-      {/* 2. Diagnóstico de Asimetría y Forma de la Distribución */}
+      {/* Diagnóstico de Asimetría y Forma de la Distribución */}
       <div className="p-6 rounded-cards bg-paper border border-hairline shadow-subtle space-y-4">
         <div className="flex items-center gap-2 pb-3 border-b border-hairline">
           <Scale className="w-4 h-4 text-ink" />
