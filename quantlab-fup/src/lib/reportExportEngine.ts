@@ -279,6 +279,178 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   curY += 10;
 
+  // Gráficos de Sección 2: Histograma/Barras + Gráfico Circular (vectoriales)
+  if (data.freqTable.rows.length > 0) {
+    const chartBoxH = 62;
+    checkAddPage(chartBoxH + 6);
+
+    const leftW = 94;
+    const rightW = contentWidth - leftW - 4;
+    const rightX = marginX + leftW + 4;
+
+    // Contenedor Histograma / Barras
+    doc.setFillColor(252, 252, 252);
+    doc.rect(marginX, curY, leftW, chartBoxH, "F");
+    doc.setDrawColor(220, 220, 220);
+    doc.rect(marginX, curY, leftW, chartBoxH, "S");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(20, 20, 20);
+    doc.text(data.isGrouped ? "HISTOGRAMA DE FRECUENCIAS (fi)" : "DIAGRAMA DE BARRAS (fi)", marginX + 3, curY + 5);
+
+    const rows = data.freqTable.rows;
+    const maxFi = Math.max(...rows.map((r) => r.absoluteFrequency), 1);
+    const plotX = marginX + 10;
+    const plotY = curY + 9;
+    const plotW = leftW - 14;
+    const plotH = chartBoxH - 21;
+
+    // Líneas guía horizontales y eje Y
+    doc.setDrawColor(232, 232, 232);
+    doc.setLineWidth(0.2);
+    [0, 0.5, 1].forEach((ratio) => {
+      const gy = plotY + plotH * (1 - ratio);
+      doc.line(plotX, gy, plotX + plotW, gy);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(5.5);
+      doc.setTextColor(120, 120, 120);
+      doc.text(Math.round(maxFi * ratio).toString(), plotX - 1.5, gy + 1, { align: "right" });
+    });
+
+    // Ejes
+    doc.setDrawColor(160, 160, 160);
+    doc.setLineWidth(0.3);
+    doc.line(plotX, plotY, plotX, plotY + plotH);
+    doc.line(plotX, plotY + plotH, plotX + plotW, plotY + plotH);
+
+    // Barras
+    const slotW = plotW / rows.length;
+    const barW = Math.max(1.5, Math.min(10, slotW * (data.isGrouped ? 0.86 : 0.68)));
+    const labelStep = rows.length > 10 ? Math.ceil(rows.length / 8) : 1;
+
+    rows.forEach((row, idx) => {
+      const bh = (row.absoluteFrequency / maxFi) * plotH;
+      const bx = plotX + idx * slotW + (slotW - barW) / 2;
+      const by = plotY + plotH - bh;
+
+      doc.setFillColor(20, 20, 20);
+      doc.rect(bx, by, barW, bh, "F");
+
+      // Valor fi encima de la barra si cabe
+      if (rows.length <= 16) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(5);
+        doc.setTextColor(40, 40, 40);
+        doc.text(row.absoluteFrequency.toString(), bx + barW / 2, Math.max(plotY + 2, by - 1), { align: "center" });
+      }
+
+      // Etiqueta X
+      if (idx % labelStep === 0) {
+        const xLbl = data.isGrouped
+          ? `${row.lowerLimit}-${row.upperLimit}`
+          : formatCourseNumber(row.classMark);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(5);
+        doc.setTextColor(90, 90, 90);
+        doc.text(xLbl, bx + barW / 2, plotY + plotH + 4, { align: "center" });
+      }
+    });
+
+    // Contenedor Gráfico Circular (Torta / Donut)
+    doc.setFillColor(252, 252, 252);
+    doc.rect(rightX, curY, rightW, chartBoxH, "F");
+    doc.setDrawColor(220, 220, 220);
+    doc.rect(rightX, curY, rightW, chartBoxH, "S");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(20, 20, 20);
+    doc.text("DISTRIBUCIÓN PORCENTUAL (%)", rightX + 3, curY + 5);
+
+    const monoPalette: [number, number, number][] = [
+      [10, 10, 10],
+      [45, 45, 45],
+      [82, 82, 82],
+      [115, 115, 115],
+      [150, 150, 150],
+      [185, 185, 185],
+      [212, 212, 212],
+    ];
+
+    const pieCx = rightX + 22;
+    const pieCy = curY + 34;
+    const outerR = 17;
+    const innerR = 7;
+    const totalPct = rows.reduce((acc, r) => acc + r.percentage, 0) || 100;
+
+    let startDeg = -90;
+    rows.forEach((row, idx) => {
+      const sliceDeg = (row.percentage / totalPct) * 360;
+      if (sliceDeg <= 0.1) return;
+      const [r, g, b] = monoPalette[idx % monoPalette.length];
+      doc.setFillColor(r, g, b);
+
+      const steps = Math.max(2, Math.ceil(sliceDeg / 5));
+      const stepDeg = sliceDeg / steps;
+      for (let s = 0; s < steps; s++) {
+        const a1 = ((startDeg + s * stepDeg) * Math.PI) / 180;
+        const a2 = ((startDeg + (s + 1) * stepDeg) * Math.PI) / 180;
+        doc.triangle(
+          pieCx,
+          pieCy,
+          pieCx + outerR * Math.cos(a1),
+          pieCy + outerR * Math.sin(a1),
+          pieCx + outerR * Math.cos(a2),
+          pieCy + outerR * Math.sin(a2),
+          "F"
+        );
+      }
+
+      // Separador blanco entre sectores
+      const edgeRad = (startDeg * Math.PI) / 180;
+      doc.setDrawColor(255, 255, 255);
+      doc.setLineWidth(0.4);
+      doc.line(pieCx, pieCy, pieCx + outerR * Math.cos(edgeRad), pieCy + outerR * Math.sin(edgeRad));
+
+      startDeg += sliceDeg;
+    });
+
+    // Centro blanco del donut
+    doc.setFillColor(252, 252, 252);
+    doc.circle(pieCx, pieCy, innerR, "F");
+
+    // Leyenda lateral del gráfico circular (máx 9 ítems para evitar desborde)
+    const legX = rightX + 43;
+    let legY = curY + 13;
+    const maxLegend = Math.min(rows.length, 9);
+    for (let i = 0; i < maxLegend; i++) {
+      const row = rows[i];
+      const [r, g, b] = monoPalette[i % monoPalette.length];
+      doc.setFillColor(r, g, b);
+      doc.rect(legX, legY - 2, 2.2, 2.2, "F");
+
+      const lbl = data.isGrouped
+        ? `[${row.lowerLimit}, ${row.upperLimit})`
+        : formatCourseNumber(row.classMark);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(5.5);
+      doc.setTextColor(50, 50, 50);
+      doc.text(sanitizePdfText(`${lbl}: ${formatCourseNumber(row.percentage)}%`), legX + 3.5, legY, {
+        maxWidth: rightW - 48,
+      });
+      legY += 4.8;
+    }
+    if (rows.length > maxLegend) {
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(5);
+      doc.setTextColor(110, 110, 110);
+      doc.text(`+ ${rows.length - maxLegend} clases más en tabla`, legX, legY);
+    }
+
+    curY += chartBoxH + 6;
+  }
+
   // Sección 3: medidas de tendencia central & asimetría
   const cardW = (contentWidth - 6) / 3;
   doc.setFont("helvetica", "normal");
@@ -530,7 +702,90 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.setTextColor(60, 60, 60);
   drawLines(outlierLines, marginX + 4, curY + 5 + tukeyTitleLines.length * 3.6 + 1.5, 3.6);
 
-  curY += tukeyH + 6;
+  curY += tukeyH + 4;
+
+  // Diagrama de Caja y Bigotes (Boxplot de Tukey vectorial)
+  const boxChartH = 34;
+  checkAddPage(boxChartH + 6);
+
+  doc.setFillColor(252, 252, 252);
+  doc.rect(marginX, curY, contentWidth, boxChartH, "F");
+  doc.setDrawColor(220, 220, 220);
+  doc.rect(marginX, curY, contentWidth, boxChartH, "S");
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(20, 20, 20);
+  doc.text("DIAGRAMA DE CAJA Y BIGOTES (BOXPLOT DE TUKEY)", marginX + 4, curY + 5);
+
+  const bpPadX = 14;
+  const bpPlotX = marginX + bpPadX;
+  const bpPlotW = contentWidth - bpPadX * 2;
+  const bpCenterY = curY + 18;
+
+  const bpAll = [
+    data.dispersion.minVal,
+    data.dispersion.maxVal,
+    data.dispersion.lowerFenceLI,
+    data.dispersion.upperFenceLS,
+    ...data.dispersion.outliers,
+  ];
+  const bpMin = Math.min(...bpAll);
+  const bpMax = Math.max(...bpAll);
+  const bpSpan = bpMax - bpMin || 1;
+  const getBpX = (v: number) => bpPlotX + ((v - bpMin) / bpSpan) * bpPlotW;
+
+  const xLI = Math.max(bpPlotX, getBpX(data.dispersion.lowerFenceLI));
+  const xQ1 = getBpX(data.dispersion.q1);
+  const xQ2 = getBpX(data.dispersion.q2);
+  const xQ3 = getBpX(data.dispersion.q3);
+  const xLS = Math.min(bpPlotX + bpPlotW, getBpX(data.dispersion.upperFenceLS));
+
+  // Eje guía horizontal
+  doc.setDrawColor(210, 210, 210);
+  doc.setLineWidth(0.25);
+  doc.line(bpPlotX, bpCenterY, bpPlotX + bpPlotW, bpCenterY);
+
+  // Bigotes
+  doc.setDrawColor(20, 20, 20);
+  doc.setLineWidth(0.45);
+  doc.line(xLI, bpCenterY, xQ1, bpCenterY);
+  doc.line(xLI, bpCenterY - 3, xLI, bpCenterY + 3);
+  doc.line(xQ3, bpCenterY, xLS, bpCenterY);
+  doc.line(xLS, bpCenterY - 3, xLS, bpCenterY + 3);
+
+  // Caja intercuartílica (Q1 a Q3)
+  doc.setFillColor(255, 255, 255);
+  doc.setDrawColor(20, 20, 20);
+  doc.setLineWidth(0.5);
+  doc.rect(xQ1, bpCenterY - 5, Math.max(1.5, xQ3 - xQ1), 10, "FD");
+
+  // Mediana (Q2)
+  doc.setLineWidth(0.9);
+  doc.line(xQ2, bpCenterY - 5, xQ2, bpCenterY + 5);
+
+  // Outliers en rojo
+  data.dispersion.outliers.forEach((out) => {
+    const ox = getBpX(out);
+    doc.setFillColor(220, 38, 38);
+    doc.circle(ox, bpCenterY, 1.3, "F");
+  });
+
+  // Etiquetas numéricas del Boxplot
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(5.8);
+  doc.setTextColor(90, 90, 90);
+  doc.text(`LI: ${formatCourseNumber(data.dispersion.lowerFenceLI)}`, xLI, bpCenterY + 9.5, { align: "center" });
+  doc.text(`LS: ${formatCourseNumber(data.dispersion.upperFenceLS)}`, xLS, bpCenterY + 9.5, { align: "center" });
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(6);
+  doc.setTextColor(20, 20, 20);
+  doc.text(`Q1: ${formatCourseNumber(data.dispersion.q1)}`, xQ1, bpCenterY - 7, { align: "center" });
+  doc.text(`Me: ${formatCourseNumber(data.dispersion.q2)}`, xQ2, bpCenterY + 12.5, { align: "center" });
+  doc.text(`Q3: ${formatCourseNumber(data.dispersion.q3)}`, xQ3, bpCenterY - 7, { align: "center" });
+
+  curY += boxChartH + 6;
 
   // Sección 6: interpretación oficial del curso (4 párrafos)
   checkAddPage(50);
