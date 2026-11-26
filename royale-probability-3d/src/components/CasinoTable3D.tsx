@@ -140,7 +140,7 @@ export default function CasinoTable3D({
     return generateCasinoFeltTexture(participants, isSpinning ? null : winnerPersonIndex);
   }, [mounted, participants, isSpinning, winnerPersonIndex]);
 
-  // Material de caoba barnizada con brillo cálido y tono rojizo visible
+  // Material de caoba tono rojizo visible
   const mahoganyMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -151,18 +151,18 @@ export default function CasinoTable3D({
     []
   );
 
-  // Material de latón / oro pulido de alta reflectividad
+  // Material de oro 
   const brassMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
         color: "#f7c844",
         roughness: 0.14,
-        metalness: 0.9,
+        metalness: 0.8,
       }),
     []
   );
 
-  // Material de cuero / acolchado del reposabrazos cálido
+  // Material de cuero del reposabrazos cálido
   const armrestMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({

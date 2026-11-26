@@ -703,16 +703,7 @@ function CasinoSceneContent() {
         />
       </group>
 
-      {/* NPC 2: Jugador jugando en las tragamonedas (36) */}
-      <group position={[4.65, -1.45, 1.0]}>
-        <CasinoAsset
-          name="36"
-          position={[0, 0, 0]}
-          rotation={[0, -Math.PI / 2.3, 0]}
-          scale={0.9}
-          getMaterial={getMaterial}
-        />
-      </group>
+      
 
       {/* NPC 3: Jugador VIP observando la mesa de ruleta (75) — separado de la esquina de la mesa */}
       <group position={[3.95, -0.42, -2.15]}>
