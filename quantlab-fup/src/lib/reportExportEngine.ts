@@ -47,6 +47,29 @@ export function exportReportToPDF(data: ReportExportData): void {
   const contentWidth = pageWidth - marginX * 2; // 182mm
   let curY = 16;
 
+  // Normaliza símbolos Unicode fuera de WinAnsi para evitar glifos corruptos y desbordes en jsPDF
+  const sanitizePdfText = (raw: string): string => {
+    return raw
+      .replace(/x\u0304/g, "Media")
+      .replace(/\u03A3/g, "Sum")
+      .replace(/\u2265/g, ">=")
+      .replace(/\u2264/g, "<=")
+      .replace(/\u2260/g, "!=")
+      .replace(/\u221A/g, "raiz")
+      .replace(/\u222A/g, "U")
+      .replace(/\u2229/g, "n")
+      .replace(/\u2205/g, "{}")
+      .normalize("NFC")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\x00-\xFF\u2013\u2014\u2018\u2019\u201C\u201D\u2022\u2026]/g, " ");
+  };
+
+  const drawLines = (lines: string[], x: number, y: number, lineHeight: number) => {
+    lines.forEach((line, idx) => {
+      doc.text(line, x, y + idx * lineHeight);
+    });
+  };
+
   const checkAddPage = (neededHeight: number) => {
     if (curY + neededHeight > pageHeight - 16) {
       doc.addPage();
@@ -107,14 +130,19 @@ export function exportReportToPDF(data: ReportExportData): void {
   // SECCIÓN 1: FICHA TÉCNICA Y CLASIFICACIÓN METODOLÓGICA (Altura dinámica sin solapamientos)
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
-  const justLines = doc.splitTextToSize(`• Justificación Teórica: ${data.variableJustification}`, contentWidth - 8);
-  const critText = `• Criterio de Agrupación del Curso: ${
-    data.isGrouped
-      ? `Datos Agrupados (N ≥ 40). Regla de Sturges: k = ${data.freqTable.sturgesK}, Rango = ${formatCourseNumber(
-          data.freqTable.rangeR
-        )}${u}, Amplitud A = ${formatCourseNumber(data.freqTable.amplitudeA)}${u}.`
-      : "Datos No Agrupados (N < 40). Análisis exacto sobre valores individuales observados."
-  }`;
+  const justLines = doc.splitTextToSize(
+    sanitizePdfText(`• Justificación Teórica: ${data.variableJustification}`),
+    contentWidth - 8
+  );
+  const critText = sanitizePdfText(
+    `• Criterio de Agrupación del Curso: ${
+      data.isGrouped
+        ? `Datos Agrupados (N >= 40). Regla de Sturges: k = ${data.freqTable.sturgesK}, Rango = ${formatCourseNumber(
+            data.freqTable.rangeR
+          )}${u}, Amplitud A = ${formatCourseNumber(data.freqTable.amplitudeA)}${u}.`
+        : "Datos No Agrupados (N < 40). Análisis exacto sobre valores individuales observados."
+    }`
+  );
   const critLines = doc.splitTextToSize(critText, contentWidth - 8);
   const sec1H = 14 + justLines.length * 3.8 + critLines.length * 3.8 + 4;
 
@@ -132,9 +160,9 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(40, 40, 40);
-  doc.text(`• Clasificación Metodológica: Cuantitativa ${data.variableType}`, marginX + 4, curY + 11.5);
-  doc.text(justLines, marginX + 4, curY + 16);
-  doc.text(critLines, marginX + 4, curY + 16 + justLines.length * 3.8 + 1.5);
+  doc.text(sanitizePdfText(`• Clasificación Metodológica: Cuantitativa ${data.variableType}`), marginX + 4, curY + 11.5);
+  drawLines(justLines, marginX + 4, curY + 16, 3.8);
+  drawLines(critLines, marginX + 4, curY + 16 + justLines.length * 3.8 + 1.5, 3.8);
 
   curY += sec1H + 6;
 
@@ -238,16 +266,16 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.text("TOTALES:", tx + (colWidths[0] + colWidths[1] + colWidths[2]) / 2, curY + 4.5, { align: "center" });
   tx += colWidths[0] + colWidths[1] + colWidths[2];
 
-  doc.text(`Σ fi = ${data.freqTable.sumAbsolute}`, tx + colWidths[3] / 2, curY + 4.5, { align: "center" });
+  doc.text(`Sum fi = ${data.freqTable.sumAbsolute}`, tx + colWidths[3] / 2, curY + 4.5, { align: "center" });
   tx += colWidths[3] + colWidths[4];
 
-  doc.text(`Σ hi = ${formatCourseNumber(data.freqTable.sumRelative)}`, tx + colWidths[5] / 2, curY + 4.5, { align: "center" });
+  doc.text(`Sum hi = ${formatCourseNumber(data.freqTable.sumRelative)}`, tx + colWidths[5] / 2, curY + 4.5, { align: "center" });
   tx += colWidths[5];
 
-  doc.text(`Σ % = ${formatCourseNumber(data.freqTable.sumPercentage)}%`, tx + colWidths[6] / 2, curY + 4.5, { align: "center" });
+  doc.text(`Sum % = ${formatCourseNumber(data.freqTable.sumPercentage)}%`, tx + colWidths[6] / 2, curY + 4.5, { align: "center" });
   tx += colWidths[6];
 
-  doc.text(`Σ ° = ${formatCourseNumber(data.freqTable.sumDegrees)}°`, tx + colWidths[7] / 2, curY + 4.5, { align: "center" });
+  doc.text(`Sum ° = ${formatCourseNumber(data.freqTable.sumDegrees)}°`, tx + colWidths[7] / 2, curY + 4.5, { align: "center" });
 
   curY += 10;
 
@@ -258,19 +286,21 @@ export function exportReportToPDF(data: ReportExportData): void {
 
   const tcCards = [
     {
-      title: "Media Aritmética (x̄)",
-      val: `${formatCourseNumber(data.centralTendency.mean)}${u}`,
-      subLines: doc.splitTextToSize(data.centralTendency.meanCalculationSteps || "", cardW - 6),
+      title: "Media Aritmética (Media)",
+      val: sanitizePdfText(`${formatCourseNumber(data.centralTendency.mean)}${u}`),
+      subLines: doc.splitTextToSize(sanitizePdfText(data.centralTendency.meanCalculationSteps || ""), cardW - 6),
     },
     {
       title: "Mediana (Me - 50%)",
-      val: `${formatCourseNumber(data.centralTendency.median)}${u}`,
-      subLines: doc.splitTextToSize(data.centralTendency.medianCalculationSteps || "", cardW - 6),
+      val: sanitizePdfText(`${formatCourseNumber(data.centralTendency.median)}${u}`),
+      subLines: doc.splitTextToSize(sanitizePdfText(data.centralTendency.medianCalculationSteps || ""), cardW - 6),
     },
     {
-      title: `Moda (Mo) • ${data.centralTendency.modeType}`,
-      val: (data.centralTendency.modes || []).map((m) => `${formatCourseNumber(m)}${u}`).join(", ") || "Amodal",
-      subLines: doc.splitTextToSize(data.centralTendency.modeExplanation || "", cardW - 6),
+      title: sanitizePdfText(`Moda (Mo) • ${data.centralTendency.modeType}`),
+      val: sanitizePdfText(
+        (data.centralTendency.modes || []).map((m) => `${formatCourseNumber(m)}${u}`).join(", ") || "Amodal"
+      ),
+      subLines: doc.splitTextToSize(sanitizePdfText(data.centralTendency.modeExplanation || ""), cardW - 6),
     },
   ];
 
@@ -292,7 +322,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7.5);
     doc.setTextColor(100, 100, 100);
-    doc.text(c.title, cx + 3, curY + 5);
+    doc.text(c.title, cx + 3, curY + 5, { maxWidth: cardW - 6 });
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10.5);
@@ -302,7 +332,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(6.8);
     doc.setTextColor(70, 70, 70);
-    doc.text(c.subLines, cx + 3, curY + 16.5);
+    drawLines(c.subLines, cx + 3, curY + 16.5, 3.1);
   });
 
   curY += maxTcH + 4;
@@ -310,7 +340,10 @@ export function exportReportToPDF(data: ReportExportData): void {
   // Asimetría / Sesgo (altura dinámica)
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  const skewLines = doc.splitTextToSize(data.centralTendency.skewnessExplanation || "", contentWidth - 8);
+  const skewLines = doc.splitTextToSize(
+    sanitizePdfText(data.centralTendency.skewnessExplanation || ""),
+    contentWidth - 8
+  );
   const skewH = 8 + skewLines.length * 3.4 + 3;
   checkAddPage(skewH + 4);
 
@@ -322,11 +355,11 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(10, 10, 10);
-  doc.text(`Diagnóstico de Asimetría: Distribución ${data.centralTendency.skewness}`, marginX + 4, curY + 5);
+  doc.text(sanitizePdfText(`Diagnóstico de Asimetría: Distribución ${data.centralTendency.skewness}`), marginX + 4, curY + 5);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(60, 60, 60);
-  doc.text(skewLines, marginX + 4, curY + 9.5);
+  drawLines(skewLines, marginX + 4, curY + 9.5, 3.4);
 
   curY += skewH + 6;
 
@@ -340,18 +373,18 @@ export function exportReportToPDF(data: ReportExportData): void {
   const qCards = [
     {
       title: "Cuartil 1 (Q1 - 25%)",
-      val: `${formatCourseNumber(q1.value)}${u}`,
-      descLines: doc.splitTextToSize(q1.procedureText || "", cardW - 6),
+      val: sanitizePdfText(`${formatCourseNumber(q1.value)}${u}`),
+      descLines: doc.splitTextToSize(sanitizePdfText(q1.procedureText || ""), cardW - 6),
     },
     {
       title: "Cuartil 2 (Q2 - 50% = Me)",
-      val: `${formatCourseNumber(q2.value)}${u}`,
-      descLines: doc.splitTextToSize(q2.procedureText || "", cardW - 6),
+      val: sanitizePdfText(`${formatCourseNumber(q2.value)}${u}`),
+      descLines: doc.splitTextToSize(sanitizePdfText(q2.procedureText || ""), cardW - 6),
     },
     {
       title: "Cuartil 3 (Q3 - 75%)",
-      val: `${formatCourseNumber(q3.value)}${u}`,
-      descLines: doc.splitTextToSize(q3.procedureText || "", cardW - 6),
+      val: sanitizePdfText(`${formatCourseNumber(q3.value)}${u}`),
+      descLines: doc.splitTextToSize(sanitizePdfText(q3.procedureText || ""), cardW - 6),
     },
   ];
 
@@ -373,17 +406,17 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7.5);
     doc.setTextColor(100, 100, 100);
-    doc.text(c.title, cx + 3, curY + 5);
+    doc.text(c.title, cx + 3, curY + 5, { maxWidth: cardW - 6 });
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10.5);
     doc.setTextColor(10, 10, 10);
-    doc.text(c.val, cx + 3, curY + 11);
+    doc.text(c.val, cx + 3, curY + 11, { maxWidth: cardW - 6 });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(6.8);
     doc.setTextColor(70, 70, 70);
-    doc.text(c.descLines, cx + 3, curY + 15.5);
+    drawLines(c.descLines, cx + 3, curY + 15.5, 3.1);
   });
 
   curY += maxQH + 5;
@@ -412,13 +445,13 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.setFontSize(6.5);
 
   const dispCards = [
-    { title: "Rango Total (R)", val: `${formatCourseNumber(data.dispersion.rangeR)}${u}`, subLines: [] as string[] },
+    { title: "Rango Total (R)", val: sanitizePdfText(`${formatCourseNumber(data.dispersion.rangeR)}${u}`), subLines: [] as string[] },
     { title: "Varianza Muestral (s²)", val: `${formatCourseNumber(data.dispersion.varianceSample)}`, subLines: [] as string[] },
-    { title: "Desviación Estándar (s)", val: `${formatCourseNumber(data.dispersion.stdDevSample)}${u}`, subLines: [] as string[] },
+    { title: "Desviación Estándar (s)", val: sanitizePdfText(`${formatCourseNumber(data.dispersion.stdDevSample)}${u}`), subLines: [] as string[] },
     {
       title: "Coef. Variación (CV)",
       val: `${formatCourseNumber(data.dispersion.coefficientOfVariation)}%`,
-      subLines: doc.splitTextToSize(data.dispersion.homogeneityLabel || "", dispCols - 6),
+      subLines: doc.splitTextToSize(sanitizePdfText(data.dispersion.homogeneityLabel || ""), dispCols - 6),
     },
   ];
 
@@ -440,7 +473,7 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7);
     doc.setTextColor(100, 100, 100);
-    doc.text(c.title, cx + 3, curY + 4.5);
+    doc.text(c.title, cx + 3, curY + 4.5, { maxWidth: dispCols - 6 });
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(9.5);
@@ -451,7 +484,7 @@ export function exportReportToPDF(data: ReportExportData): void {
       doc.setFont("helvetica", "italic");
       doc.setFontSize(6.5);
       doc.setTextColor(40, 120, 50);
-      doc.text(c.subLines, cx + 3, curY + 15);
+      drawLines(c.subLines, cx + 3, curY + 15, 3);
     }
   });
 
@@ -461,20 +494,23 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7.5);
   const tukeyTitleLines = doc.splitTextToSize(
-    `Criterio de Tukey (1.5 × RIC): RIC = ${formatCourseNumber(data.dispersion.iqr)}${u} | Límite Inferior LI = ${formatCourseNumber(
-      data.dispersion.lowerFenceLI
-    )}${u} | Límite Superior LS = ${formatCourseNumber(data.dispersion.upperFenceLS)}${u}`,
+    sanitizePdfText(
+      `Criterio de Tukey (1.5 × RIC): RIC = ${formatCourseNumber(data.dispersion.iqr)}${u} | Límite Inferior LI = ${formatCourseNumber(
+        data.dispersion.lowerFenceLI
+      )}${u} | Límite Superior LS = ${formatCourseNumber(data.dispersion.upperFenceLS)}${u}`
+    ),
     contentWidth - 8
   );
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  const outlierText =
+  const outlierText = sanitizePdfText(
     data.dispersion.outliers.length === 0
       ? "Estado: Sin valores atípicos detectados en el colectivo analizado. Distribución consistente."
       : `Valores Atípicos Detectados (${data.dispersion.outliers.length}): ${data.dispersion.outliers
           .map((o) => `${formatCourseNumber(o)}${u}`)
-          .join(", ")}`;
+          .join(", ")}`
+  );
   const outlierLines = doc.splitTextToSize(outlierText, contentWidth - 8);
   const tukeyH = 4 + tukeyTitleLines.length * 3.6 + 2 + outlierLines.length * 3.6 + 3;
 
@@ -487,12 +523,12 @@ export function exportReportToPDF(data: ReportExportData): void {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7.5);
   doc.setTextColor(10, 10, 10);
-  doc.text(tukeyTitleLines, marginX + 4, curY + 5);
+  drawLines(tukeyTitleLines, marginX + 4, curY + 5, 3.6);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(60, 60, 60);
-  doc.text(outlierLines, marginX + 4, curY + 5 + tukeyTitleLines.length * 3.6 + 1.5);
+  drawLines(outlierLines, marginX + 4, curY + 5 + tukeyTitleLines.length * 3.6 + 1.5, 3.6);
 
   curY += tukeyH + 6;
 
@@ -512,11 +548,13 @@ export function exportReportToPDF(data: ReportExportData): void {
   ];
 
   paragraphs.forEach((p) => {
-    checkAddPage(16);
-    doc.setFillColor(252, 252, 252);
-    const splitText = doc.splitTextToSize(p, contentWidth - 8);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7.5);
+    const splitText = doc.splitTextToSize(sanitizePdfText(p), contentWidth - 8);
     const boxHeight = splitText.length * 3.8 + 5;
+    checkAddPage(boxHeight + 4);
 
+    doc.setFillColor(252, 252, 252);
     doc.rect(marginX, curY, contentWidth, boxHeight, "F");
     doc.setDrawColor(225, 225, 225);
     doc.rect(marginX, curY, contentWidth, boxHeight, "S");
@@ -524,19 +562,12 @@ export function exportReportToPDF(data: ReportExportData): void {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(20, 20, 20);
-    doc.text(splitText, marginX + 4, curY + 4);
+    drawLines(splitText, marginX + 4, curY + 4, 3.8);
 
     curY += boxHeight + 3;
   });
 
   // Sección 7: probabilidad empírica y conteo
-  checkAddPage(22);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(10, 10, 10);
-  doc.text("7. RESUMEN DE PROBABILIDAD EMPÍRICA Y ANÁLISIS COMBINATORIO", marginX, curY);
-  curY += 5;
-
   const n = data.numericData.length;
   const greaterMeanCount = data.numericData.filter((x) => x > data.centralTendency.mean).length;
   const pGreaterMean = greaterMeanCount / (n || 1);
@@ -544,30 +575,45 @@ export function exportReportToPDF(data: ReportExportData): void {
   const withinIQRCount = data.numericData.filter((x) => x >= data.dispersion.q1 && x <= data.dispersion.q3).length;
   const pWithinIQR = withinIQRCount / (n || 1);
 
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  const probLine1 = doc.splitTextToSize(
+    sanitizePdfText(
+      `• Probabilidad de valores superiores a la media P(X > Media): ${greaterMeanCount}/${n} = ${formatCourseNumber(
+        pGreaterMean
+      )} (${formatCourseNumber(pGreaterMean * 100)}%)`
+    ),
+    contentWidth - 8
+  );
+  const probLine2 = doc.splitTextToSize(
+    sanitizePdfText(
+      `• Probabilidad en rango intercuartílico P(Q1 <= X <= Q3): ${withinIQRCount}/${n} = ${formatCourseNumber(
+        pWithinIQR
+      )} (${formatCourseNumber(pWithinIQR * 100)}%)`
+    ),
+    contentWidth - 8
+  );
+  const probBoxH = 5 + probLine1.length * 3.8 + probLine2.length * 3.8 + 2;
+
+  checkAddPage(probBoxH + 10);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(10, 10, 10);
+  doc.text("7. RESUMEN DE PROBABILIDAD EMPÍRICA Y ANÁLISIS COMBINATORIO", marginX, curY);
+  curY += 5;
+
   doc.setFillColor(248, 248, 248);
-  doc.rect(marginX, curY, contentWidth, 14, "F");
+  doc.rect(marginX, curY, contentWidth, probBoxH, "F");
   doc.setDrawColor(220, 220, 220);
-  doc.rect(marginX, curY, contentWidth, 14, "S");
+  doc.rect(marginX, curY, contentWidth, probBoxH, "S");
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(30, 30, 30);
-  doc.text(
-    `• Probabilidad de valores superiores a la media P(X > x̄): ${greaterMeanCount}/${n} = ${formatCourseNumber(
-      pGreaterMean
-    )} (${formatCourseNumber(pGreaterMean * 100)}%)`,
-    marginX + 4,
-    curY + 5
-  );
-  doc.text(
-    `• Probabilidad en rango intercuartílico P(Q1 ≤ X ≤ Q3): ${withinIQRCount}/${n} = ${formatCourseNumber(
-      pWithinIQR
-    )} (${formatCourseNumber(pWithinIQR * 100)}%)`,
-    marginX + 4,
-    curY + 10
-  );
+  drawLines(probLine1, marginX + 4, curY + 5, 3.8);
+  drawLines(probLine2, marginX + 4, curY + 5 + probLine1.length * 3.8 + 1, 3.8);
 
-  curY += 18;
+  curY += probBoxH + 4;
 
   // Pie de página final en cada hoja
   const totalPages = doc.getNumberOfPages();
