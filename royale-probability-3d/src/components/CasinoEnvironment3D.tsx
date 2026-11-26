@@ -730,8 +730,8 @@ function CasinoSceneContent() {
         />
       </group>
 
-      {/* NPC 3: Jugador VIP observando la mesa de ruleta (75) */}
-      <group position={[3.5, -0.42, -1.35]}>
+      {/* NPC 3: Jugador VIP observando la mesa de ruleta (75) — separado de la esquina de la mesa */}
+      <group position={[3.95, -0.42, -2.15]}>
         <mesh position={[0, -0.52, 0]} receiveShadow>
           <boxGeometry args={[1.2, 0.95, 1.1]} />
           <meshStandardMaterial color="#300d06" roughness={0.3} metalness={0.1} />

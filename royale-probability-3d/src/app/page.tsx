@@ -26,9 +26,8 @@ import CasinoEnvironment3D from "../components/CasinoEnvironment3D";
 import SoberHUD from "../components/SoberHUD";
 import Roulette3DMinimalistHUD, { SpinPersonRecord } from "../components/Roulette3DMinimalistHUD";
 import { RouletteParticipant } from "../lib/rouletteTextureGenerator";
-import StatCalculator from "../components/StatCalculator";
 import { formatStat } from "../lib/statCalculatorEngine";
-import { Users, Calculator, Dices, Sun, Moon } from "lucide-react";
+import { Users, Dices } from "lucide-react";
 
 // Escena 3D interactiva con iluminación de estudio de casino VIP
 function Interactive3DScene({
@@ -204,17 +203,16 @@ function Interactive3DScene({
 
 export default function RoyaleProbabilityPage() {
   // 0. CONTROL DE PROGRAMA ACTIVO (ENTREGABLES DEL CURSO DE ESTADÍSTICA)
-  const [activeTab, setActiveTab] = useState<"roulette_person" | "stat_calculator" | "roulette_3d">("roulette_person");
-  // Toggle de Fondo Claro adaptativo para el HUD Liquid Iridescence y el entorno 3D
+  const [activeTab, setActiveTab] = useState<"roulette_person" | "roulette_3d">("roulette_person");
+  // Toggle de Fondo Claro adaptativo para el HUD y el entorno 3D
   const [lightBackground, setLightBackground] = useState<boolean>(false);
 
-  // Soporte para deep-linking mediante parámetro en la URL (?tab=calc / ?tab=3d / ?tab=roulette)
+  // Soporte para deep-linking mediante parámetro en la URL (?tab=3d / ?tab=roulette)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab");
-      if (tab === "calc" || tab === "stat_calculator") setActiveTab("stat_calculator");
-      else if (tab === "3d" || tab === "roulette_3d") setActiveTab("roulette_3d");
+      if (tab === "3d" || tab === "roulette_3d") setActiveTab("roulette_3d");
       else if (tab === "roulette" || tab === "roulette_person") setActiveTab("roulette_person");
 
       const light = params.get("light");
@@ -612,7 +610,7 @@ export default function RoyaleProbabilityPage() {
             Ω
           </div>
           <span className="text-xs font-extrabold tracking-[0.032em] uppercase text-white">
-            Royale Probability 3D
+            Ruleta
           </span>
         </div>
 
@@ -629,19 +627,6 @@ export default function RoyaleProbabilityPage() {
           >
             <Users className="w-3.5 h-3.5" />
             <span>Ruleta Personas</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("stat_calculator")}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-[0.03em] border transition-colors ${
-              activeTab === "stat_calculator"
-                ? "bg-white text-black border-black"
-                : "bg-[#14151a] text-zinc-300 border-zinc-700 hover:border-zinc-500 hover:text-white"
-            }`}
-          >
-            <Calculator className="w-3.5 h-3.5" />
-            <span>Calculadora</span>
           </button>
 
           <button
@@ -710,13 +695,6 @@ export default function RoyaleProbabilityPage() {
               lightBackground={lightBackground}
               onToggleLightBackground={() => setLightBackground((prev) => !prev)}
             />
-          </div>
-        )}
-
-        {/* PROGRAMA 2: CALCULADORA ESTADÍSTICA (HASTA 100 DATOS) */}
-        {activeTab === "stat_calculator" && (
-          <div className="w-full h-full overflow-y-auto bg-zinc-950 p-2 sm:p-4">
-            <StatCalculator />
           </div>
         )}
 
