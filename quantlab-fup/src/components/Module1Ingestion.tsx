@@ -2,7 +2,19 @@ import React, { useRef } from "react";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { PRELOADED_DATASETS, type DatasetMeta } from "../data/defaultDatasets";
-import { UploadCloud, FileSpreadsheet, CheckCircle2, Info, Database } from "lucide-react";
+import { UploadCloud, FileSpreadsheet, CheckCircle2, Info, Database, Download } from "lucide-react";
+
+const SAMPLE_CSV_CONTENT = `estudiante,edad,promedio,horas_estudio
+Ana Martinez,19,4.2,12
+Carlos Gomez,21,3.7,8
+Laura Torres,20,4.5,15
+Mateo Ruiz,22,3.4,6
+Sofia Vargas,19,4.8,18
+Daniel Lopez,20,3.9,10
+Valentina Diaz,21,4.1,11
+Andres Castro,23,3.2,5
+Camila Rojas,19,4.4,14
+Sebastian Mora,20,3.8,9`;
 
 interface Module1IngestionProps {
   currentDataset: DatasetMeta | null;
@@ -165,13 +177,49 @@ export default function Module1Ingestion({
             }
           }}
         />
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="min-h-[40px] px-5 py-2 rounded-buttons bg-ink hover:bg-ink-soft text-paper font-medium text-xs tracking-tight shadow-sm transition-all active:scale-95 flex items-center gap-2"
-        >
-          <FileSpreadsheet className="w-3.5 h-3.5" />
-          <span>Examinar Archivos Locales</span>
-        </button>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="min-h-[40px] px-5 py-2 rounded-buttons bg-ink hover:bg-ink-soft text-paper font-medium text-xs tracking-tight shadow-sm transition-all active:scale-95 flex items-center gap-2"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5" />
+            <span>Examinar Archivos Locales</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const blob = new Blob([SAMPLE_CSV_CONTENT], { type: "text/csv;charset=utf-8;" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = "datos_ejemplo_quantlab.csv";
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
+            }}
+            className="min-h-[40px] px-4 py-2 rounded-buttons bg-paper hover:bg-surface-alt text-ink border border-hairline font-medium text-xs tracking-tight shadow-sm transition-all active:scale-95 flex items-center gap-2"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Descargar Ejemplo (.csv)</span>
+          </button>
+        </div>
+
+        {/* Ejemplo de estructura requerida para CSV / Excel */}
+        <div className="mt-5 w-full max-w-xl text-left bg-paper border border-hairline rounded-nested p-4 shadow-subtle">
+          <p className="text-[11px] font-mono uppercase tracking-wider text-ink font-semibold mb-1.5">
+            Estructura recomendada del archivo (.CSV o .XLSX)
+          </p>
+          <p className="text-[11px] text-mid-gray mb-2.5 leading-relaxed">
+            La primera fila debe contener los nombres de las columnas (encabezados) y las siguientes filas los registros. Usa punto (<code className="font-mono text-ink">.</code>) para decimales en las columnas numéricas que deseas analizar.
+          </p>
+          <pre className="text-[11px] font-mono bg-surface-alt border border-hairline rounded-inputs p-2.5 text-ink overflow-x-auto leading-relaxed">
+{`estudiante,edad,promedio,horas_estudio
+Ana Martinez,19,4.2,12
+Carlos Gomez,21,3.7,8
+Laura Torres,20,4.5,15`}
+          </pre>
+        </div>
       </div>
 
       {/* Configuración de la Variable Seleccionada y Unidad de Medida */}
